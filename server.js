@@ -30,22 +30,18 @@ db.once('open', function() {
 app.use(morgan('dev')); // log every request to the console
 app.use(bodyParser()); // get information from html forms
 
+app.use(function(req, res, next){
+    if (req.headers['x-forwarded-proto'] === 'https') {
+        res.redirect('http://' + req.hostname + req.url);
+    } else {
+        next();
+    }
+});
 
 
 // import routes
 require('./app/routes.js')(app);
 
-app.get("/api/food", (req, res) => {
-  const param = req.query.q;
-
-  if (!param) {
-    res.json({
-      error: "Missing required parameter `q`"
-    });
-    return;
-  }
-
-});
 
 app.listen(app.get("port"), () => {
   console.log(`Find the server at: http://localhost:${app.get("port")}/`); // eslint-disable-line no-console
