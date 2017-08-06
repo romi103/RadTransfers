@@ -6,9 +6,6 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser')
 var configDB = require('./config/database.js');
 
-
-
-
 const app = express();
 
 app.set("port", process.env.PORT || 3001);
