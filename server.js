@@ -15,7 +15,7 @@ app.set("port", process.env.PORT || 3001);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, 'client/build')));
 }
-
+console.log(process.env.NODE_ENV);
 mongoose.connect(configDB.url);
 
 var db = mongoose.connection;
