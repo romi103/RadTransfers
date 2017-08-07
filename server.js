@@ -12,11 +12,10 @@ const app = express();
 app.set("port", process.env.PORT || 3001);
 
 // Express only serves static assets in production
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static(path.join(__dirname, 'client/build')));
-// }
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, 'client/build')));
+}
 
-app.use(express.static(path.join(__dirname, 'client/build')));
 mongoose.connect(configDB.url);
 
 var db = mongoose.connection;
