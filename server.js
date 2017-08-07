@@ -11,6 +11,15 @@ const app = express();
 
 app.set("port", process.env.PORT || 3001);
 
+app.use(function(req, res, next){
+    if (req.headers['x-forwarded-proto'] === 'https') {
+        res.redirect('http://' + req.hostname + req.url);
+    } else {
+        next();
+    }
+});
+
+
 // Express only serves static assets in production
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, 'client/build')));
@@ -29,13 +38,6 @@ db.once('open', function() {
 app.use(morgan('dev')); // log every request to the console
 app.use(bodyParser()); // get information from html forms
 
-// app.use(function(req, res, next){
-//     if (req.headers['x-forwarded-proto'] === 'https') {
-//         res.redirect('http://' + req.hostname + req.url);
-//     } else {
-//         next();
-//     }
-// });
 
 
 // import routes
