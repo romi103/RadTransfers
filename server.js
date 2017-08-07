@@ -5,6 +5,7 @@ var passport = require('passport');
 var morgan = require('morgan');
 var bodyParser = require('body-parser')
 var configDB = require('./config/database.js');
+var path = require('path');
 
 const app = express();
 
@@ -12,7 +13,7 @@ app.set("port", process.env.PORT || 3001);
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
+  app.use(express.static(path.join(__dirname, 'client/build')));
 }
 mongoose.connect(configDB.url);
 
@@ -27,13 +28,13 @@ db.once('open', function() {
 app.use(morgan('dev')); // log every request to the console
 app.use(bodyParser()); // get information from html forms
 
-app.use(function(req, res, next){
-    if (req.headers['x-forwarded-proto'] === 'https') {
-        res.redirect('http://' + req.hostname + req.url);
-    } else {
-        next();
-    }
-});
+// app.use(function(req, res, next){
+//     if (req.headers['x-forwarded-proto'] === 'https') {
+//         res.redirect('http://' + req.hostname + req.url);
+//     } else {
+//         next();
+//     }
+// });
 
 
 // import routes
