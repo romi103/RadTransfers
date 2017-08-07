@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "proxy": "http://localhost:3001/",
-    "homepage": "http://rads-transfers.herokuapp.com/",
+    "homepage": "https://rads-transfers.herokuapp.com/",
     "dependencies": {
         "bootstrap": "^3.3.7",
         "dns": "file:./src/mock/dns",
