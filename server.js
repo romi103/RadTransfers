@@ -24,7 +24,7 @@ app.use(function(req, res, next){
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, 'client/build')));
 }
-console.log(process.env.NODE_ENV);
+
 mongoose.connect(configDB.url);
 
 var db = mongoose.connection;
@@ -37,8 +37,8 @@ db.once('open', function() {
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
 app.use(bodyParser({limit: '50mb'})); // get information from html forms
-app.set('views', './app/views')
-app.set('view engine', 'jade')
+// app.set('views', './app/views')
+// app.set('view engine', 'jade')
 
 
 
