@@ -36,12 +36,16 @@ db.once('open', function() {
 
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
-app.use(bodyParser()); // get information from html forms
+app.use(bodyParser({limit: '50mb'})); // get information from html forms
+app.set('views', './app/views')
+app.set('view engine', 'jade')
 
 
 
 // import routes
 require('./app/routes.js')(app);
+require('./app/routesEmails.js')(app);
+
 
 
 app.listen(app.get("port"), () => {

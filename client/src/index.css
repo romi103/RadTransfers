@@ -1,5 +1,81 @@
+/* *******general style*********8  */
+
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
 }
+
+.actionButton {
+    margin: 2px;
+}
+
+.home-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+
+/* ******END general style************ */
+
+
+/* ******form style********* */
+
+form {
+    width: 70%;
+    margin: 20px auto;
+}
+
+form label {
+    display: block;
+}
+
+form input,
+form select {
+    margin: 0 0 10px 12px;
+}
+
+form .buttonForm {
+    margin: 0 5px;
+}
+
+
+/* ******END form style******** */
+
+
+/* ********Nav bar style*********** */
+
+.horizontal-list {
+    font-size: 20px;
+    max-width: 600px;
+    margin: 0 auto 10px;
+}
+
+.horizontal-list ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.horizontal-list li {
+    display: inline;
+    padding: 15px;
+}
+
+.horizontal-list .link {
+    text-align: center;
+    text-decoration: none;
+}
+
+
+/****** END Nav bar ********/

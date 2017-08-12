@@ -1,23 +1,12 @@
 import uuidV1 from 'uuid/v1';
 // import sentEmail from 'SendConf';
-// import mailgun from 'mailgun-js'; 
+ 
 import React, { Component } from 'react';
 import $ from 'jquery';
-// import { renderEmail } from 'react-html-email';
-//import { ConfirmEmailCustomer } from '../../emailAPI/emailTemplates.js';
 // import { pdfCreator } from '../../emailAPI/pdfCreator.js';
-// import { keys } from '../../keys/emailKeys.js';
-// import fs from 'fs';
-
 // import mailcomposer from 'mailcomposer';
-
-
-
-// import mailcomposer from 'mailcomposer';
-
-// imp 
 // var pdfMake = require("pdfmake");
-
+// import mailgun from 'mailgun-js';
 
 
 export const saveBooking = (booking) => {
@@ -54,86 +43,105 @@ export const addBooking = (booking) => {
             }
 }
 // -----------Booking confiration
-// export const confirmBookingSave = (booking) => {
-//     return (dispatch, getState) => {
+export const confirmBookingSave = (booking) => {
+    return (dispatch, getState) => {
+           $.get('/confirm/' + booking.email)
+       .done(() =>{
+            dispatch(confirmBooking(booking._id));
+       })
+        .fail((err) => {
+            alert("An error occured. Please contact support", err);
+        })
+        // let confirm = new Promise((resolve, reject) => {
 
-//         let confirm = new Promise((resolve, reject) => {
-
-//             //getting assigned driver data
-//             let assignedDriverId = booking.assignedDriver
-//             let driversState = getState().drivers; 
-//             let driverData = driversState.filter((driver) => {
-//                 return driver._id == assignedDriverId
-//             })
+        //     //getting assigned driver data
+        //     let assignedDriverId = booking.assignedDriver
+        //     let driversState = getState().drivers; 
+        //     let driverData = driversState.filter((driver) => {
+        //         return driver._id == assignedDriverId
+        //     })
             
-//             dispatch(driverBeingConfirmedId(booking.assignedDriver));
-//             dispatch(bookingBeingConfirmedId(booking._id));
+        //     dispatch(driverBeingConfirmedId(booking.assignedDriver));
+        //     dispatch(bookingBeingConfirmedId(booking._id));
 
         
-//                 // var pdf = pdfMake.createPdf(pdfCreator(booking, driverData));
-//                 var pdf = pdfMake.createPdf(pdfCreator(booking, driverData));
-//                 pdf.getBase64((data) => {
-//                     {/*fs.writeFile('test.pdf', buffer, function (err) {
-//                     if (err) throw err;
-//                     console.log('file saved');
-//                     });*/}
+        //         // var pdf = pdfMake.createPdf(pdfCreator(booking, driverData));
+        //         // var pdf = pdfMake.createPdf(pdfCreator(booking, driverData));
+        //         // pdf.getBase64((data) => {
+        //         //     {/*fs.writeFile('test.pdf', buffer, function (err) {
+        //         //     if (err) throw err;
+        //         //     console.log('file saved');
+        //         //     });*/}
                 
-//                     //console.log('file saved', pdf);
-//                     if(data) {
-//                         resolve({ data: data, booking: booking, driverData: driverData});
-//                     }
-//                 });
+        //         //     //console.log('file saved', pdf);
+        //         //     if(data) {
+        //                 resolve();
+        //         //     }
+        //         // });
            
-//         }).then((data) => {
-//             //FIXME: ERROR in ./~/react-html-email/lib/injectReactEmailAttributes.js Module not found: Error: Cannot resolve module 'react/lib/DOMProperty' 
-//             // const emailHTML =  renderEmail(<ConfirmEmailCustomer booking={data.booking} driver={data.driverData} />)
-//             const emailHTML = ""
+        // }).then(() => {
+        //     //FIXME: ERROR in ./~/react-html-email/lib/injectReactEmailAttributes.js Module not found: Error: Cannot resolve module 'react/lib/DOMProperty' 
+        //     // const emailHTML =  renderEmail(<ConfirmEmailCustomer booking={data.booking} driver={data.driverData} />)
 
-//             const mailgunConfig = mailgun({
-//                 apiKey: keys.apiKey,
-//                 domain: keys.domain
-//             });
+ 
+        //     var mailgun = require('mailgun-js')({apiKey: keys.apiKey, domain: keys.domain});
+            
+        //     var data = {
+        //     from: 'Excited User <me@samples.mailgun.org>',
+        //     to: 'romaan.lorent@gmail.com',
+        //     subject: 'Hello',
+        //     text: 'Testing some Mailgun awesomness!'
+        //     };
+            
+        //     mailgun.messages().send(data, function (error, body) {
+        //     console.log(body);
+        //     });
 
-//             const mail = mailcomposer({
-//                 from: 'you@samples.mailgun.org',
-//                 to: data.booking.email,
-//                 subject: 'Booking conforamtion. Reference No. ' + data.booking.refno,
-//                 text: 'Test email text',
-//                 html: emailHTML,
-//                 attachments: [{
-//                     filename: 'booking' + data.booking.refn +'.pdf',
-//                     content: data.data,
-//                     encoding: 'base64'
-//                 }]
-//             });
+            // const mailgunConfig = mailgun({
+            //     apiKey: keys.apiKey,
+            //     domain: keys.domain
+            // });
 
-//             mail.build(function (mailBuildError, message) {
+            // const mail = mailcomposer({
+            //     from: 'you@samples.mailgun.org',
+            //     to: 'romaan.lorent@gmail.com',
+            //     subject: 'Booking conforamtion. Reference No. ',
+            //     text: 'Test email text',
+            //     html: "<p>Test</p>",
+            //     // attachments: [{
+            //     //     filename: 'booking' + data.booking.refn +'.pdf',
+            //     //     content: data.data,
+            //     //     encoding: 'base64'
+            //     // }]
+            // });
 
-//                 var dataToSend = {
-//                     to: data.booking.email,
-//                     message: message.toString('ascii')
-//                 };
+            // mail.build(function (mailBuildError, message) {
 
-//                 mailgunConfig.messages().sendMime(dataToSend, function (sendError, body) {
-//                     if (sendError) {
-//                         alert('An error occured', sendError)
-//                         console.log(sendError);
-//                         return;
-//                     } else {
-//                         dispatch(driverConfirmedEmailReset());
-//                         dispatch(bookingConfirmedEmailReset());
-//                         alert("The email has been sent!");
+            //     var dataToSend = {
+            //         to: 'romaan.lorent@gmail.com',
+            //         message: message.toString('ascii')
+            //     };
+
+            //     mailgunConfig.messages().sendMime(dataToSend, function (sendError, body) {
+            //         if (sendError) {
+            //             alert('An error occured', sendError)
+            //             console.log(sendError);
+            //             return;
+            //         } else {
+            //             dispatch(driverConfirmedEmailReset());
+            //             dispatch(bookingConfirmedEmailReset());
+            //             alert("The email has been sent!");
                         
-//                     }
-//                 });
-//             });
+            //         }
+            //     });
+            // });
 
 
-//             //ipcRenderer.send('confirmBooking', booking);
-//             dispatch(confirmBooking(booking._id));
-//             })
-//     }
-// }
+            //ipcRenderer.send('confirmBooking', booking);
+           
+            }
+    
+}
 
 export const confirmBooking = (id) => {
     
@@ -224,8 +232,6 @@ export const getInitialState = () => {
             console.log(bookings);
             resolve(bookings);
         })
-
-     
         }).then((bookings) => {
             dispatch(setInitialState(bookings));
         })
@@ -275,14 +281,12 @@ export const hideDriverModal = () => {
 //--------- drivers - action
 export const fetchDrivers = () => {
     return (dispatch, getState) => {
-        let fetchData = new Promise((resolve, reject) => {
-            // ipcRenderer.sendSync('fetchDrivers', 'fetchDrivers');
-
-            // ipcRenderer.on('comingDrivers', (event, drivers) => {
-            //     resolve(drivers);
-            // })
-        }).then((drivers) => {
-            dispatch(setInitialDrivers(drivers));
+            $.get('/getdrivers')
+            .done((drivers) => {
+                    dispatch(setInitialDrivers(drivers));
+                })
+            .fail(() => {
+            alert("An error occured. Please contact support");
         })
     }
 }
@@ -303,8 +307,13 @@ export const saveDriver = (driver) => {
             ...driver,
             _id: uuidV1()
         }
-        // ipcRenderer.send('saveDriver', driverMod);
-        dispatch(addDriver(driverMod));
+        $.post('/savedriver', driverMod)
+            .done(() =>{
+                dispatch(addDriver(driverMod))
+            })
+            .fail(() => {
+                alert("An error occured. Please contact support")
+            })
     }
 
 }
@@ -312,11 +321,13 @@ export const saveDriver = (driver) => {
 export const saveEditDriver = (driver) => {
 
     return (dispatch, getState) => {
-        // var driverMod = {
-        //     ...driver
-        // }
-        // ipcRenderer.send('saveEditDriver', driver);
-        dispatch(editDriver(driver));
+         $.post('/saveeditdriver', driver)
+            .done(() =>{
+                dispatch(editDriver(driver));
+            })
+            .fail(() => {
+                alert("An error occured. Please contact support")
+            })
     }
 
 }

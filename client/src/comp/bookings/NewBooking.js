@@ -140,6 +140,7 @@ export class NewBooking extends Component {
                             label="Email of Passanger:"
                             type="email"
                             required={true}
+                            value={this.state.booking.email}
                             />
 
                         <InputText 

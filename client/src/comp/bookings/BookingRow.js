@@ -27,7 +27,7 @@ export class BookingRow extends Component {
         }
 
         if (window.confirm('Are you sure you want to CONFIRM this booking? This action will tigger sending a conformation email to the passanger!')) {
-            // this.props.dispatch(confirmBookingSave(this.props.booking));
+            this.props.dispatch(confirmBookingSave(this.props.booking));
             console.log(this.props.booking);
          
         } else {

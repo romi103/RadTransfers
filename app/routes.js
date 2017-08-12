@@ -1,12 +1,12 @@
 module.exports = function (app) {
 
     var Bookings = require('./models/newbooking.js')
+    var Drivers = require('./models/drivers.js')
 
      app.post('/newbooking', function (req, res, next) {
         
         var newBooking = new Bookings();
         console.log("accepted");
-        console.log("body",req.body);
         newBooking._id = req.body._id
         newBooking.refno =  req.body.refno
         newBooking.date =  req.body.date
@@ -27,6 +27,54 @@ module.exports = function (app) {
         res.end();
         
     });
+    // =====================================
+    // SAVING DRIVER ===============
+    // =====================================
+      app.post('/savedriver', function (req, res, next) {
+        var newDriver = new Drivers();
+        newDriver._id = req.body._id,
+        newDriver.driverId = req.body.driverId,
+        newDriver.name = req.body.name,
+        newDriver.surname = req.body.surname,
+        newDriver.address = req.body.address,
+        newDriver.dob = req.body.dob,
+        newDriver.nin = req.body.nin,
+        newDriver.availableFrom = req.body.availableFrom,
+        newDriver.availableTo = req.body.availableTo,
+        newDriver.photoPath = req.body.photoPath,
+        newDriver.licPath = req.body.licPath,
+        newDriver.email = req.body.email,
+        newDriver.carRegNo = req.body.carRegNo,
+        newDriver.notes = req.body.notes
+        newDriver.save();
+        res.end();
+        
+    });
+    // =====================================
+    // EDIT-SAVING DRIVER ===============
+    // =====================================
+      app.post('/saveeditdriver', function (req, res, next) {
+        
+        Drivers.update({ _id: req.body._id }, { $set: { 
+                _id: req.body._id,
+                driverId: req.body.driverId,
+                name: req.body.name,
+                surname: req.body.surname,
+                address: req.body.address,
+                dob: req.body.dob,
+                nin: req.body.nin,
+                availableFrom: req.body.availableFrom,
+                availableTo: req.body.availableTo,
+                photoPath: req.body.photoPath,
+                licPath: req.body.licPath,
+                email: req.body.email,
+                carRegNo: req.body.carRegNo,
+                notes: req.body.notes } }, (err, numUpdate) => {
+                    if (err) throw "An error occured."
+                    console.log("updated");
+                    res.end();
+        })
+    });
 
 
        // =====================================
@@ -35,8 +83,21 @@ module.exports = function (app) {
     app.get('/getbookings', function (req, res) {
 
         var bookings = Bookings.find().exec(function (err, bookings) {
-            console.log(bookings)
+            // console.log(bookings)
+             if (err) return handleError(err);
             res.send(bookings);
+        });
+    });
+
+          // =====================================
+    // GETTING LIST OF DRIVERS ===============
+    // =====================================
+    app.get('/getdrivers', function (req, res) {
+
+        var drivers = Drivers.find().exec(function (err, drivers) {
+            // console.log(drivers)
+             if (err) return handleError(err);
+            res.send(drivers);
         });
     });
 
@@ -48,6 +109,7 @@ module.exports = function (app) {
         Bookings.find({
             "_id": req.params.bookingId
         }).remove().exec(function(err, bookings) {
+            if (err) return handleError(err);
             res.send(bookings)
         })
     });
@@ -57,11 +119,12 @@ module.exports = function (app) {
     // =====================================
      app.get('/cancelbooking/:bookingId', function (req, res) {
 
-        Bookings.find({
+        Bookings.findByIdAndUpdate({
             "_id": req.params.bookingId
-        }).remove().exec(function(err, bookings) {
-            res.send(bookings)
-        })
+        }, { $set: {confirmed: false, cancelled: true}}, { new: true }, function (err, booking) {
+            if (err) return handleError(err);
+            res.send(booking);
+        });
     });
 
     
