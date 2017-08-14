@@ -45,100 +45,23 @@ export const addBooking = (booking) => {
 // -----------Booking confiration
 export const confirmBookingSave = (booking) => {
     return (dispatch, getState) => {
-           $.get('/confirm/' + booking.email)
-       .done(() =>{
-            dispatch(confirmBooking(booking._id));
-       })
-        .fail((err) => {
-            alert("An error occured. Please contact support", err);
-        })
-        // let confirm = new Promise((resolve, reject) => {
+             //getting assigned driver data
+            let assignedDriverId = booking.assignedDriver
+            let driversState = getState().drivers; 
+            let driverData = driversState.filter((driver) => {
+                return driver._id == assignedDriverId
+            })
 
-        //     //getting assigned driver data
-        //     let assignedDriverId = booking.assignedDriver
-        //     let driversState = getState().drivers; 
-        //     let driverData = driversState.filter((driver) => {
-        //         return driver._id == assignedDriverId
-        //     })
-            
-        //     dispatch(driverBeingConfirmedId(booking.assignedDriver));
-        //     dispatch(bookingBeingConfirmedId(booking._id));
-
-        
-        //         // var pdf = pdfMake.createPdf(pdfCreator(booking, driverData));
-        //         // var pdf = pdfMake.createPdf(pdfCreator(booking, driverData));
-        //         // pdf.getBase64((data) => {
-        //         //     {/*fs.writeFile('test.pdf', buffer, function (err) {
-        //         //     if (err) throw err;
-        //         //     console.log('file saved');
-        //         //     });*/}
-                
-        //         //     //console.log('file saved', pdf);
-        //         //     if(data) {
-        //                 resolve();
-        //         //     }
-        //         // });
-           
-        // }).then(() => {
-        //     //FIXME: ERROR in ./~/react-html-email/lib/injectReactEmailAttributes.js Module not found: Error: Cannot resolve module 'react/lib/DOMProperty' 
-        //     // const emailHTML =  renderEmail(<ConfirmEmailCustomer booking={data.booking} driver={data.driverData} />)
-
- 
-        //     var mailgun = require('mailgun-js')({apiKey: keys.apiKey, domain: keys.domain});
-            
-        //     var data = {
-        //     from: 'Excited User <me@samples.mailgun.org>',
-        //     to: 'romaan.lorent@gmail.com',
-        //     subject: 'Hello',
-        //     text: 'Testing some Mailgun awesomness!'
-        //     };
-            
-        //     mailgun.messages().send(data, function (error, body) {
-        //     console.log(body);
-        //     });
-
-            // const mailgunConfig = mailgun({
-            //     apiKey: keys.apiKey,
-            //     domain: keys.domain
-            // });
-
-            // const mail = mailcomposer({
-            //     from: 'you@samples.mailgun.org',
-            //     to: 'romaan.lorent@gmail.com',
-            //     subject: 'Booking conforamtion. Reference No. ',
-            //     text: 'Test email text',
-            //     html: "<p>Test</p>",
-            //     // attachments: [{
-            //     //     filename: 'booking' + data.booking.refn +'.pdf',
-            //     //     content: data.data,
-            //     //     encoding: 'base64'
-            //     // }]
-            // });
-
-            // mail.build(function (mailBuildError, message) {
-
-            //     var dataToSend = {
-            //         to: 'romaan.lorent@gmail.com',
-            //         message: message.toString('ascii')
-            //     };
-
-            //     mailgunConfig.messages().sendMime(dataToSend, function (sendError, body) {
-            //         if (sendError) {
-            //             alert('An error occured', sendError)
-            //             console.log(sendError);
-            //             return;
-            //         } else {
-            //             dispatch(driverConfirmedEmailReset());
-            //             dispatch(bookingConfirmedEmailReset());
-            //             alert("The email has been sent!");
-                        
-            //         }
-            //     });
-            // });
-
-
-            //ipcRenderer.send('confirmBooking', booking);
-           
+           $.post('/confirm/', { booking: booking, driver: driverData })
+                .done(() =>{
+                    dispatch(confirmBooking(booking._id));
+                    dispatch(driverConfirmedEmailReset());
+                    dispatch(bookingConfirmedEmailReset());
+                    alert("Conformation email sent.")
+            })
+                .fail((err) => {
+                    alert("An error occured. Please contact support", err);
+            })           
             }
     
 }
@@ -184,10 +107,20 @@ export const bookingConfirmedEmailReset= () => {
 // ---------- Booking cancelation
 export const cancelBookingSave = (booking) => {
     return (dispatch, getState) => {
-         $.get('/cancelbooking/' + booking._id)
-       .done(() =>{
+
+          //getting assigned driver data
+            let assignedDriverId = booking.assignedDriver
+            let driversState = getState().drivers; 
+            let driverData = driversState.filter((driver) => {
+                return driver._id == assignedDriverId
+            })
+
+
+         $.post('/cancelbooking', { booking: booking, driver: driverData  })
+            .done(() =>{
            dispatch(cancelBooking(booking._id));
-       })
+           alert("Cancelation email sent.");
+        })
         .fail(() => {
             alert("An error occured. Please contact support");
         })

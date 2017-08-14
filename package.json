@@ -6,10 +6,12 @@
   "dependencies": {
     "babel-core": "6.14.0",
     "body-parser": "^1.17.2",
+    "ejs": "^2.5.7",
     "express": "4.13.3",
     "flash": "^1.1.0",
     "fs": "0.0.2",
     "jade": "^1.11.0",
+    "juice": "^4.1.0",
     "mailcomposer": "^4.0.2",
     "mailgun-js": "^0.12.1",
     "mongodb": "^2.2.30",

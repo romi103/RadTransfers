@@ -37,8 +37,8 @@ db.once('open', function() {
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
 app.use(bodyParser({limit: '50mb'})); // get information from html forms
-// app.set('views', './app/views')
-// app.set('view engine', 'jade')
+app.set('views', './app/views')
+app.set('view engine', 'ejs')
 
 
 
