@@ -8,8 +8,8 @@ var configDB = require('./config/database.js');
 var path = require('path');
 
 const app = express();
-
-app.set("port", process.env.PORT || 3001);
+var port = process.env.PORT || 3001
+// app.set("port", process.env.PORT || 3001);
 
 app.use(function(req, res, next){
     if (req.headers['x-forwarded-proto'] === 'https') {
@@ -48,6 +48,9 @@ require('./app/routesEmails.js')(app);
 
 
 
-app.listen(app.get("port"), () => {
-  console.log(`Find the server at: http://localhost:${app.get("port")}/`); // eslint-disable-line no-console
+// app.listen(app.get("port"), () => {
+//   console.log(`Find the server at: http://localhost:${app.get("port")}/`); // eslint-disable-line no-console
+// });
+server.listen(port, function() {
+    console.log("App is running on port " + port);
 });
