@@ -8,8 +8,8 @@ var configDB = require('./config/database.js');
 var path = require('path');
 
 const app = express();
-var port = process.env.PORT || 3001
-// app.set("port", process.env.PORT || 3001);
+
+app.set("port", process.env.PORT || 3001);
 
 app.use(function(req, res, next){
     if (req.headers['x-forwarded-proto'] === 'https') {
@@ -37,8 +37,8 @@ db.once('open', function() {
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
 app.use(bodyParser({limit: '50mb'})); // get information from html forms
-// app.set('views', './app/views')
-// app.set('view engine', 'ejs')
+app.set('views', './app/views')
+app.set('view engine', 'ejs')
 
 
 
@@ -48,9 +48,6 @@ require('./app/routesEmails.js')(app);
 
 
 
-// app.listen(app.get("port"), () => {
-//   console.log(`Find the server at: http://localhost:${app.get("port")}/`); // eslint-disable-line no-console
-// });
-server.listen(port, function() {
-    console.log("App is running on port " + port);
+app.listen(app.get("port"), () => {
+  console.log(`Find the server at: http://localhost:${app.get("port")}/`); // eslint-disable-line no-console
 });

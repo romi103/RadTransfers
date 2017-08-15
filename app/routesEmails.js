@@ -1,6 +1,6 @@
 module.exports = function (app) {
 
-const keys = require('./keys/emailKeys.js');
+// const keys = require('./keys/emailKeys.js');
 const mailgun = require('mailgun-js');
 const ejs = require('ejs');
 var fs = require('fs');
