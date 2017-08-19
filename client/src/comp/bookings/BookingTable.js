@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getInitialState} from '../../store/action/action.js';
+import { getInitialState, showNewBookingModal} from '../../store/action/action.js';
 import { connect } from 'react-redux';
 import { BookingRow }  from './BookingRow.js';
 import { NewBookingContainer} from './NewBookingContainer.js';
@@ -44,7 +44,7 @@ export default class BookingTable extends Component {
     }
 
     showModal() {
-        this.props.showTheModal()
+          this.props.dispatch(showNewBookingModal())
     }
 
     saveFile = () => {

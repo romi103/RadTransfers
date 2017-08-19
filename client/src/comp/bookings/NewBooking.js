@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { addBooking, getDrivers} from '../../store/action/action.js';
+import { addBooking, getDrivers, hideNewBookingModal} from '../../store/action/action.js';
 import { connect } from 'react-redux';
 import { Modal, Button, FieldGroup } from 'react-bootstrap';
 import { findDOMNode } from 'react-dom';
 import {InputText} from '../layout/InputText.js';
+import $ from 'jquery';
 
 
 
@@ -13,7 +14,6 @@ export class NewBooking extends Component {
     constructor(props) {  
         super(props);
         this.state = {
-            booking: {
                 _id: '',
                 refno: '',
                 date: '',
@@ -26,10 +26,9 @@ export class NewBooking extends Component {
                 remarks: `Flight No:\nNumber of Passangers:\n`,
                 confirmed: '',
                 cancelled: '',
-                email: 'romanlorent@gmail.com',
+                email: '',
                 assignedDriver: '',
                 fairNumber: ''
-            }
         }
 
         this.handleChangeDriver = this.handleChangeDriver.bind(this);
@@ -47,33 +46,50 @@ export class NewBooking extends Component {
             let driverFairNumber = driverInfoArr[1];
             let driverName = event.target.value
             let currentSate = this.state;
-            currentSate.booking.assignedDriver = driverId;
-            currentSate.booking.driverId = driverName;
-            currentSate.booking.fairNumber = driverFairNumber;
+            currentSate.assignedDriver = driverId;
+            currentSate.driverId = driverName;
+            currentSate.fairNumber = driverFairNumber;
             return this.setState(currentSate);
         };
     }
 
+    componentWillMount() {
+        const { editingBooking, bookingBeingEdited} = this.props.modal
+        if (editingBooking) {
+            console.log('form state', bookingBeingEdited )
+            this.setState(bookingBeingEdited);
+        }
+    }
+
     // handleChangeDriver
-    
     handleSubmit (event) {
+        
         event.preventDefault();
-        this.props.handleTheSubmit(this.state.booking);
+        this.props.handleTheSubmit(this.state);
+        this.hideModal();
+    }
+
+     handleSubmitEdit = (event) => {
+        event.preventDefault();
+
+        this.props.handleTheSubmitEdit(this.state);
         this.hideModal();
     }
 
     hideModal() {
-        this.props.hideTheModal()
-    }
+        this.props.dispatch(hideNewBookingModal());
+     }
 
     getDataValue = (event) => {
         let currentSate = this.state;
         let key = event.target.dataset.additional; 
-            currentSate.booking[key] = event.target.value
+            currentSate[key] = event.target.value
             return this.setState(currentSate);
     }
 
     validateInput = (value) => {
+
+
         
         console.log("validating from the parent component. Value: ", value)
         //it can return value to child component validation
@@ -82,8 +98,11 @@ export class NewBooking extends Component {
 
     render(){
 
+        const { editingBooking} = this.props.modal
+
         return (
             <div>
+                
                 <form>
                     <fieldset>
                         <legend>New Booking</legend>
@@ -94,6 +113,7 @@ export class NewBooking extends Component {
                             label="Reference Number:"
                             type="text"
                             required={true}
+                            value={this.state.refno}
                             /> 
 
                         <InputText 
@@ -103,6 +123,7 @@ export class NewBooking extends Component {
                             label="Date:"
                             required={true}
                             type="date"
+                            value={this.state.date}
                             
                             /> 
 
@@ -113,6 +134,7 @@ export class NewBooking extends Component {
                             label="Pre Booked Date:"
                             type="date"
                             required={true}
+                            value={this.state.predate}
                             />
 
                         <InputText 
@@ -122,6 +144,7 @@ export class NewBooking extends Component {
                             label="Time of Colection:"
                             type="time"
                             required={true}
+                            value={this.state.time}
                             />
 
                         <InputText 
@@ -131,6 +154,7 @@ export class NewBooking extends Component {
                             label="Name of Passanger:"
                             type="text"
                             required={true}
+                            value={this.state.name}
                             />
 
                         <InputText 
@@ -140,7 +164,7 @@ export class NewBooking extends Component {
                             label="Email of Passanger:"
                             type="email"
                             required={true}
-                            value={this.state.booking.email}
+                            value={this.state.email}
                             />
 
                         <InputText 
@@ -150,6 +174,7 @@ export class NewBooking extends Component {
                             label="Pick up Address:"
                             type="text"
                             required={true}
+                            value={this.state.pickup}
                             />
 
                         <InputText 
@@ -159,11 +184,12 @@ export class NewBooking extends Component {
                             label="Destination:"
                             type="text"
                             required={true}
+                            value={this.state.destination}
                             />
 
                         <div>
                             <label htmlFor='DriverNumber'>Driver:</label>
-                            <select id='DriverNumber' value={this.state.booking.driverId} onChange={this.handleChangeDriver('driverId')}>
+                            <select id='DriverNumber' value={this.state.driverId} onChange={this.handleChangeDriver('driverId')}>
                                 <option>Select driver</option>
                                 {this.props.drivers.map((driver) => {
                                 return (
@@ -181,9 +207,12 @@ export class NewBooking extends Component {
 
                     </fieldset>
 
-                    <Button className="buttonForm" type='submit' onClick={this.handleSubmit}>Submit</Button>
+                    <Button className="buttonForm" type='submit' onClick={editingBooking ? this.handleSubmitEdit : this.handleSubmit }>Submit</Button>
                     <Button className="buttonForm" onClick={this.hideModal}>Close</Button>
                 </form>
+                <script>
+                    {console.log("test 11111")}
+                </script>
             </div>
         );
     }

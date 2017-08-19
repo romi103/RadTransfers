@@ -72,17 +72,11 @@ export class InputText extends Component {
         }
 
         const renderErrorr = () => {
-            if (this.state.showErrorMessage) {
-            return (<div>error</div>);
+             if (!this.state.valid && this.state.showErrorMessage) {
+                return (<div>x</div>);
             }
         }
 
-        
-        if (!this.state.valid && this.state.showErrorMessage) {
-
-        } else {
-
-        }
         const inputStyle = {
         }
 

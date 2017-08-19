@@ -133,18 +133,45 @@ export const driversReducer = (state = [], action) => {
     }
 }
 // state of modals
-export const modalReducer = (state = {showNewBookingModal: false, showDriverModal: false, editingDriver: false, driverBeingEdited: null}, action) =>{
+export const modalReducer = (state = {
+    showNewBookingModal: false, 
+    showDriverModal: false, 
+
+    editingBooking: false, 
+    editingDriver: false, 
+
+    driverBeingEdited: null,
+    bookingBeingEdited: null }, action) =>{
     switch (action.type) {
+        ///Booking modal
         case 'SHOW_MODAL_BOOKING':
             return Object.assign({}, state, {showNewBookingModal: true});
         case 'HIDE_MODAL_BOOKING':
-            return Object.assign({}, state, {showNewBookingModal: false});
+            return Object.assign({}, state, {
+                showNewBookingModal: false,
+                bookingBeingEdited: action.bookingBeingEdited,
+                editingBooking: action.editingBooking
+            });
+        //Driver modal
         case 'SHOW_MODAL_DRIVERS':
             return Object.assign({}, state, {showDriverModal: action.showDriverModal});
         case 'HIDE_MODAL_DRIVERS':
-            return Object.assign({}, state, {showDriverModal: action.showDriverModal,  driverBeingEdited: action.driverBeingEdited, editingDriver: action.editingDriver});
+            return Object.assign({}, state, {
+                showDriverModal: action.showDriverModal,  
+                driverBeingEdited: action.driverBeingEdited, 
+                editingDriver: action.editingDriver});
+
         case 'EDITING_DRIVER':
-            return Object.assign({}, state, {editingDriver: action.editingDriver, driverBeingEdited: action.driver, showDriverModal: action.showDriverModal} )
+            return Object.assign({}, state, {
+                editingDriver: action.editingDriver, 
+                driverBeingEdited: action.driver, 
+                showDriverModal: action.showDriverModal} )
+
+         case 'EDITING_BOOKING':
+            return Object.assign({}, state, {
+                editingBooking: action.editingBooking, 
+                bookingBeingEdited: action.booking, 
+                showNewBookingModal: action.showNewBookingModal} )
         default:
             return state;
     }

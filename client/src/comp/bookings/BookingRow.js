@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { getInitialState} from '../../store/action/action.js';
 import { connect } from 'react-redux';
-import { confirmBookingSave, cancelBookingSave, removeBookingSave} from '../../store/action/action.js';
+import { confirmBookingSave, cancelBookingSave, removeBookingSave, startEditBooking} from '../../store/action/action.js';
 // import $ from 'jquery';
 import { findDOMNode } from 'react-dom';
 import { DropdownButton, MenuItem, Button, Glyphicon} from 'react-bootstrap';
@@ -50,6 +50,11 @@ export class BookingRow extends Component {
             // Do nothing!
         }
     }
+
+     handleEdit = () => {
+        this.props.dispatch(startEditBooking(this.props.booking))
+        console.log('booking being edited',this.props.booking )
+    }
     
 
     render() {
@@ -81,6 +86,9 @@ export class BookingRow extends Component {
                                         </MenuItem>
                                         <MenuItem eventKey="3">
                                             <Button bsStyle="danger" onClick={this.handleRemove}>Remove</Button>
+                                        </MenuItem>
+                                        <MenuItem eventKey="">
+                                            <Button bsStyle="primary" onClick={this.handleEdit}>Edit</Button>
                                         </MenuItem>
                                     </DropdownButton>
                                 </td>

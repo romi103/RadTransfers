@@ -74,6 +74,37 @@ export const confirmBooking = (id) => {
     }
 }
 
+export const saveEditBooking = (booking) => {
+
+    return (dispatch, getState) => {
+         $.post('/saveeditbooking', booking)
+            .done(() =>{
+                dispatch(editBooking(booking));
+            })
+            .fail(() => {
+                alert("An error occured. Please contact support")
+            })
+    }
+
+}
+
+export const editBooking = (booking) => {
+    return {
+        type: 'EDIT_BOOKING_STATE',
+        booking
+    }
+}
+
+//sart editing booking
+ export const startEditBooking = (booking) => {
+    return {
+        type: 'EDITING_BOOKING',
+        editingBooking: true,
+        showNewBookingModal: true,
+        booking
+    }
+}
+
 export const driverBeingConfirmedId = (assigned_driver_Id) => {
     return {
         type: 'DRIVER_BEING_CONFIRMED',
@@ -189,7 +220,9 @@ export const showNewBookingModal = () => {
 export const hideNewBookingModal = () => {
     return {
         type: 'HIDE_MODAL_BOOKING',
-        showNewBookingModal: false
+        showNewBookingModal: false, 
+        editingBooking: false,
+        bookingBeingEdited: null
     }
 }
 

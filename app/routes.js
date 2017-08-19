@@ -76,6 +76,35 @@ module.exports = function (app) {
         })
     });
 
+    // =====================================
+    // EDIT-SAVING DRIVER ===============
+    // =====================================
+      app.post('/saveeditbooking', function (req, res, next) {
+        
+        // Drivers.update({ _id: req.body._id }, { $set: { 
+        //         _id: req.body._id,
+        //         driverId: req.body.driverId,
+        //         name: req.body.name,
+        //         surname: req.body.surname,
+        //         address: req.body.address,
+        //         dob: req.body.dob,
+        //         nin: req.body.nin,
+        //         availableFrom: req.body.availableFrom,
+        //         availableTo: req.body.availableTo,
+        //         photoPath: req.body.photoPath,
+        //         licPath: req.body.licPath,
+        //         email: req.body.email,
+        //         carRegNo: req.body.carRegNo,
+        //         notes: req.body.notes } }, (err, numUpdate) => {
+        //             if (err) throw "An error occured."
+        //             console.log("updated");
+        //             res.end();
+        // })
+          console.log("updated");
+             res.end();
+    });
+  
+
 
        // =====================================
     // GETTING LIST OF BOOKINGS ===============
