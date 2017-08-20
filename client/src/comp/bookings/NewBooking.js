@@ -28,15 +28,35 @@ export class NewBooking extends Component {
                 cancelled: '',
                 email: '',
                 assignedDriver: '',
-                fairNumber: ''
+                fairNumber: '',
         }
+        
+        //*******************************/
+        //error object
+        //*******************************/
+        this.errors = {
+                
+                _id: null,
+                refno: null,
+                date: null,
+                predate: null,
+                time: null,
+                name: null,
+                pickup: null,
+                destination: null,
+                driverId: null,
+                remarks: null,
+                confirmed: null,
+                cancelled: null,
+                email: null,
+                assignedDriver: null,
+                fairNumber: null
+             }
 
         this.handleChangeDriver = this.handleChangeDriver.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.hideModal = this.hideModal.bind(this);
     }
-
-    
 
     handleChangeDriver(key) {
         return (event) => {
@@ -56,23 +76,63 @@ export class NewBooking extends Component {
     componentWillMount() {
         const { editingBooking, bookingBeingEdited} = this.props.modal
         if (editingBooking) {
-            console.log('form state', bookingBeingEdited )
             this.setState(bookingBeingEdited);
         }
     }
 
+    canBeSubmitted = () => {
+        const errors = this.errors;
+        const isDisabled = Object.keys(errors).some(x => errors[x])
+        return !isDisabled
+    }
+
     // handleChangeDriver
     handleSubmit (event) {
-        
         event.preventDefault();
-        this.props.handleTheSubmit(this.state);
+        if (this.canBeSubmitted()) {
+            return;
+        }
+        console.log('disabled',this.canBeSubmitted());
+
+        this.props.handleTheSubmit({
+                _id: this.state._id,
+                refno: this.state.refno,
+                date: this.state.date,
+                predate: this.state.predate,
+                time: this.state.time,
+                name: this.state.name,
+                pickup: this.state.pickup,
+                destination: this.state.destination,
+                driverId: this.state.driverId,
+                remarks: this.state.remarks,
+                confirmed: this.state.confirmed,
+                cancelled: this.state.cancelled,
+                email: this.state.email,
+                assignedDriver: this.state.assignedDriver,
+                fairNumber: this.state.fairNumber,
+        });
         this.hideModal();
     }
 
      handleSubmitEdit = (event) => {
         event.preventDefault();
-
-        this.props.handleTheSubmitEdit(this.state);
+        this.props.handleTheSubmitEdit({
+                _id: this.state._id,
+                refno: this.state.refno,
+                date: this.state.date,
+                predate: this.state.predate,
+                time: this.state.time,
+                name: this.state.name,
+                pickup: this.state.pickup,
+                destination: this.state.destination,
+                driverId: this.state.driverId,
+                remarks: this.state.remarks,
+                confirmed: this.state.confirmed,
+                cancelled: this.state.cancelled,
+                email: this.state.email,
+                assignedDriver: this.state.assignedDriver,
+                fairNumber: this.state.fairNumber
+        });
         this.hideModal();
     }
 
@@ -81,27 +141,27 @@ export class NewBooking extends Component {
      }
 
     getDataValue = (event) => {
-        let currentSate = this.state;
         let key = event.target.dataset.additional; 
-            currentSate[key] = event.target.value
-            return this.setState(currentSate);
+        this.setState({
+                [key] : event.target.value
+            });
     }
-
-    validateInput = (value) => {
-        
-        console.log("validating from the parent component. Value: ", value)
-        //it can return value to child component validation
-        return false;
+    //collects errors from inputs to this,error obj
+    validateInput = (additinalData, isValid) => {
+        this.errors[additinalData] = isValid
+        console.log(this.errors);
     }
 
     render(){
+        // const errors = this.errors;
+        // const isDisabled = Object.keys(errors).some(x => errors[x])
 
         const { editingBooking} = this.props.modal
 
         return (
             <div>
                 
-                <form>
+                <form onSubmit={editingBooking ? this.handleSubmitEdit : this.handleSubmit }>
                     <fieldset>
                         <legend>New Booking</legend>
                          <InputText 
@@ -113,6 +173,7 @@ export class NewBooking extends Component {
                             required={true}
                             value={this.state.refno}
                             index={0}
+                            validate={this.validateInput}
                             /> 
 
                         <InputText 
@@ -213,8 +274,8 @@ export class NewBooking extends Component {
 
                     </fieldset>
 
-                    <Button className="buttonForm" type='submit' onClick={editingBooking ? this.handleSubmitEdit : this.handleSubmit }>Submit</Button>
-                    <Button className="buttonForm" onClick={this.hideModal}>Close</Button>
+                    <Button className="buttonForm" type='submit'>Submit</Button>
+                    <Button className="buttonForm"  onClick={this.hideModal}>Close</Button>
                 </form>
             </div>
         );

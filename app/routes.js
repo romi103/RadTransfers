@@ -6,7 +6,7 @@ module.exports = function (app) {
      app.post('/newbooking', function (req, res, next) {
         
         var newBooking = new Bookings();
-        console.log("accepted");
+        console.log(req.body);
         newBooking._id = req.body._id
         newBooking.refno =  req.body.refno
         newBooking.date =  req.body.date

@@ -21,21 +21,21 @@ export class InputText extends Component {
         }
 
          if (this.props.validate) {
-             this.props.validate(this.state.valid, this.props.index)
+             this.props.validate(this.props.additinalData, this.state.valid)
         }
        
 
     }
 
     handleBlur = (event) => {
-        if (this.props.validate) {
-            var valid = this.props.validate(event.target.value)
-        }
+        // if (this.props.validate) {
+        //     var valid = this.props.validate(event.target.value)
+        // }
 
-        this.validation(event.target.value, valid);
+        this.validation(event.target.value);
           
         if (this.props.validate) {
-             this.props.validate(this.state.valid, this.props.index)
+             this.props.validate(this.props.additinalData, this.state.valid)
         }
     }
 
