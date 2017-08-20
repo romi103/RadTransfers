@@ -88,8 +88,6 @@ export class NewBooking extends Component {
     }
 
     validateInput = (value) => {
-
-
         
         console.log("validating from the parent component. Value: ", value)
         //it can return value to child component validation
@@ -114,6 +112,7 @@ export class NewBooking extends Component {
                             type="text"
                             required={true}
                             value={this.state.refno}
+                            index={0}
                             /> 
 
                         <InputText 
@@ -124,6 +123,7 @@ export class NewBooking extends Component {
                             required={true}
                             type="date"
                             value={this.state.date}
+                            index={1}
                             
                             /> 
 
@@ -135,6 +135,7 @@ export class NewBooking extends Component {
                             type="date"
                             required={true}
                             value={this.state.predate}
+                            index={2}
                             />
 
                         <InputText 
@@ -145,6 +146,7 @@ export class NewBooking extends Component {
                             type="time"
                             required={true}
                             value={this.state.time}
+                            index={3}
                             />
 
                         <InputText 
@@ -155,6 +157,7 @@ export class NewBooking extends Component {
                             type="text"
                             required={true}
                             value={this.state.name}
+                            index={4}
                             />
 
                         <InputText 
@@ -165,6 +168,7 @@ export class NewBooking extends Component {
                             type="email"
                             required={true}
                             value={this.state.email}
+                            index={5}
                             />
 
                         <InputText 
@@ -175,6 +179,7 @@ export class NewBooking extends Component {
                             type="text"
                             required={true}
                             value={this.state.pickup}
+                            index={6}
                             />
 
                         <InputText 
@@ -185,6 +190,7 @@ export class NewBooking extends Component {
                             type="text"
                             required={true}
                             value={this.state.destination}
+                            index={7}
                             />
 
                         <div>
@@ -210,9 +216,6 @@ export class NewBooking extends Component {
                     <Button className="buttonForm" type='submit' onClick={editingBooking ? this.handleSubmitEdit : this.handleSubmit }>Submit</Button>
                     <Button className="buttonForm" onClick={this.hideModal}>Close</Button>
                 </form>
-                <script>
-                    {console.log("test 11111")}
-                </script>
             </div>
         );
     }

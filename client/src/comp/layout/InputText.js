@@ -20,6 +20,11 @@ export class InputText extends Component {
             this.props.onChange(event);
         }
 
+         if (this.props.validate) {
+             this.props.validate(this.state.valid, this.props.index)
+        }
+       
+
     }
 
     handleBlur = (event) => {
@@ -28,6 +33,10 @@ export class InputText extends Component {
         }
 
         this.validation(event.target.value, valid);
+          
+        if (this.props.validate) {
+             this.props.validate(this.state.valid, this.props.index)
+        }
     }
 
     validation = (value, valid) => {
@@ -58,7 +67,10 @@ export class InputText extends Component {
             value: value
 
         })
+        
     }
+
+    
     
     
     render() {

@@ -54,6 +54,17 @@ export const bookingsReducer = (state = [], action) => {
 
                 }
             ];
+        case 'EDIT_BOOKING_STATE':
+            return state.map((booking) => {
+                if (booking._id == action.booking._id) {
+                    return {
+                        ...action.booking
+                    }
+                } else {
+                    return booking;
+                }
+            });
+            
         case 'CONFIRM_BOOKING':
            return state.map((booking) => {
                 if (booking._id == action._id) {

@@ -70,10 +70,8 @@ export default class BookingTable extends Component {
     } 
 
     toggleNow = () => {
-        let {searchDateNow} = this.state;//true
-        // if (searchDateNow) {
-
-        // }
+        let {searchDateNow} = this.state;
+        
         this.setState({
             searchDateNow: searchDateNow ?  false : true,
             searchTo: searchDateNow ?  '' : today
@@ -91,8 +89,6 @@ export default class BookingTable extends Component {
     }
         
     filterDateTo = (event) => {
-            //console.log(event.target.value)
-            // this.searchByDate 
             if(event.target.value) {
                 console.log(event.target.value)
                 this.setState({

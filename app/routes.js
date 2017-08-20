@@ -81,27 +81,28 @@ module.exports = function (app) {
     // =====================================
       app.post('/saveeditbooking', function (req, res, next) {
         
-        // Drivers.update({ _id: req.body._id }, { $set: { 
-        //         _id: req.body._id,
-        //         driverId: req.body.driverId,
-        //         name: req.body.name,
-        //         surname: req.body.surname,
-        //         address: req.body.address,
-        //         dob: req.body.dob,
-        //         nin: req.body.nin,
-        //         availableFrom: req.body.availableFrom,
-        //         availableTo: req.body.availableTo,
-        //         photoPath: req.body.photoPath,
-        //         licPath: req.body.licPath,
-        //         email: req.body.email,
-        //         carRegNo: req.body.carRegNo,
-        //         notes: req.body.notes } }, (err, numUpdate) => {
-        //             if (err) throw "An error occured."
-        //             console.log("updated");
-        //             res.end();
-        // })
-          console.log("updated");
-             res.end();
+        Bookings.update({ _id: req.body._id }, { $set: { 
+                  _id: req.body._id,
+                refno: req.body.refno,
+                date: req.body.date,
+                predate: req.body.predate,
+                time: req.body.time,
+                name: req.body.name,
+                pickup: req.body.pickup,
+                destination: req.body.destination,
+                driverId: req.body.driverId,
+                remarks: req.body.remarks,
+                confirmed: req.body.confirmed,
+                cancelled: req.body.cancelled,
+                email: req.body.email,
+                assignedDriver: req.body.assignedDriver,
+                fairNumber:  req.body.fairNumber
+            
+            } }, (err, numUpdate) => {
+                    if (err) throw "An error occured."
+                    console.log("updated");
+                    res.end();
+        })
     });
   
 
