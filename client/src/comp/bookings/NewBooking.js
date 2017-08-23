@@ -4,6 +4,10 @@ import { connect } from 'react-redux';
 import { Modal, Button, FieldGroup } from 'react-bootstrap';
 import { findDOMNode } from 'react-dom';
 import {InputText} from '../layout/InputText.js';
+import {SelectInput} from '../layout/SelectInput.js';
+import {TextArea} from '../layout/TextArea.js';
+
+
 import $ from 'jquery';
 
 
@@ -34,9 +38,8 @@ export class NewBooking extends Component {
         //*******************************/
         //error object
         //*******************************/
-        this.errors = {
-                
-                _id: null,
+        this.validInputs = {
+            
                 refno: null,
                 date: null,
                 predate: null,
@@ -44,55 +47,52 @@ export class NewBooking extends Component {
                 name: null,
                 pickup: null,
                 destination: null,
-                driverId: null,
-                remarks: null,
-                confirmed: null,
-                cancelled: null,
-                email: null,
-                assignedDriver: null,
-                fairNumber: null
-             }
-
-        this.handleChangeDriver = this.handleChangeDriver.bind(this);
+                email: null
+        }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.hideModal = this.hideModal.bind(this);
     }
 
-    handleChangeDriver(key) {
-        return (event) => {
-            let driverInfo = event.target.selectedOptions[0].dataset.driverinfo;
-            let driverInfoArr = driverInfo.split("::");
-            let driverId = driverInfoArr[0];
-            let driverFairNumber = driverInfoArr[1];
-            let driverName = event.target.value
-            let currentSate = this.state;
-            currentSate.assignedDriver = driverId;
-            currentSate.driverId = driverName;
-            currentSate.fairNumber = driverFairNumber;
-            return this.setState(currentSate);
-        };
-    }
+    // handleChangeDriver(key) {
+    //     return (event) => {
+    //         let driverInfo = event.target.selectedOptions[0].dataset.driverinfo;
+    //         let driverInfoArr = driverInfo.split("::");
+    //         let driverId = driverInfoArr[0];
+    //         let driverFairNumber = driverInfoArr[1];
+    //         let driverName = event.target.value
+    //         let currentSate = this.state;
+    //         currentSate.assignedDriver = driverId;
+    //         currentSate.driverId = driverName;
+    //         currentSate.fairNumber = driverFairNumber;
+    //         return this.setState(currentSate);
+    //     };
+    // }
 
     componentWillMount() {
         const { editingBooking, bookingBeingEdited} = this.props.modal
         if (editingBooking) {
             this.setState(bookingBeingEdited);
+
+            
+        //     $.each(this.validInputs, (key, value) => {
+        //         this.validInputs[key] = true;
+        // })
+        //     console.log(this.errors);
         }
     }
 
-    canBeSubmitted = () => {
-        const errors = this.errors;
-        const isDisabled = Object.keys(errors).some(x => errors[x])
+    cannotBeSubmitted = () => {
+        var validInputs = this.validInputs;
+        var isDisabled = Object.keys(validInputs).some(x => validInputs[x])
         return !isDisabled
     }
 
     // handleChangeDriver
     handleSubmit (event) {
         event.preventDefault();
-        if (this.canBeSubmitted()) {
+        if (this.cannotBeSubmitted()) {
             return;
         }
-        console.log('disabled',this.canBeSubmitted());
 
         this.props.handleTheSubmit({
                 _id: this.state._id,
@@ -116,6 +116,10 @@ export class NewBooking extends Component {
 
      handleSubmitEdit = (event) => {
         event.preventDefault();
+        // console.log(this.cannotBeSubmitted())
+        // if (this.cannotBeSubmitted()) {
+        //     return;
+        // }
         this.props.handleTheSubmitEdit({
                 _id: this.state._id,
                 refno: this.state.refno,
@@ -141,21 +145,21 @@ export class NewBooking extends Component {
      }
 
     getDataValue = (event) => {
-        let key = event.target.dataset.additional; 
+        let key = event.target.name; 
         this.setState({
                 [key] : event.target.value
             });
     }
     //collects errors from inputs to this,error obj
-    validateInput = (additinalData, isValid) => {
-        this.errors[additinalData] = isValid
-        console.log(this.errors);
+    validateInput = (name, isValid) => {
+        this.validInputs[name] = isValid
+        console.log(this.validInputs);
     }
 
     render(){
+     
         // const errors = this.errors;
         // const isDisabled = Object.keys(errors).some(x => errors[x])
-
         const { editingBooking} = this.props.modal
 
         return (
@@ -166,111 +170,120 @@ export class NewBooking extends Component {
                         <legend>New Booking</legend>
                          <InputText 
                             onChange={this.getDataValue}
-                            additinalData='refno'
+                            name='refno'
                             idAttr='refno'
                             label="Reference Number:"
                             type="text"
                             required={true}
                             value={this.state.refno}
-                            index={0}
                             validate={this.validateInput}
                             /> 
 
                         <InputText 
                             onChange={this.getDataValue}
-                            additinalData='date'
+                            name='date'
                             idAttr='date'
                             label="Date:"
                             required={true}
                             type="date"
                             value={this.state.date}
-                            index={1}
-                            
-                            /> 
+                             validate={this.validateInput}
+                        /> 
 
                         <InputText 
                             onChange={this.getDataValue}
-                            additinalData='predate'
+                            name='predate'
                             idAttr='PreBookedDate'
                             label="Pre Booked Date:"
                             type="date"
                             required={true}
                             value={this.state.predate}
-                            index={2}
+                             validate={this.validateInput}
                             />
 
                         <InputText 
                             onChange={this.getDataValue}
-                            additinalData='time'
+                            name='time'
                             idAttr='TimeOfColection'
                             label="Time of Colection:"
                             type="time"
                             required={true}
                             value={this.state.time}
-                            index={3}
+                             validate={this.validateInput}
                             />
 
                         <InputText 
                             onChange={this.getDataValue}
-                            additinalData='name'
+                            name='name'
                             idAttr='NameOfPassanger'
                             label="Name of Passanger:"
                             type="text"
                             required={true}
                             value={this.state.name}
-                            index={4}
+                             validate={this.validateInput}
                             />
 
                         <InputText 
                             onChange={this.getDataValue}
-                            additinalData='email'
+                            name='email'
                             idAttr='emailOfPassanger'
                             label="Email of Passanger:"
                             type="email"
                             required={true}
                             value={this.state.email}
-                            index={5}
+                             validate={this.validateInput}
                             />
 
                         <InputText 
                             onChange={this.getDataValue}
-                            additinalData='pickup'
+                            name='pickup'
                             idAttr='PickUp'
                             label="Pick up Address:"
                             type="text"
                             required={true}
                             value={this.state.pickup}
-                            index={6}
+                             validate={this.validateInput}
                             />
 
                         <InputText 
                             onChange={this.getDataValue}
-                            additinalData='destination'
+                            name='destination'
                             idAttr='Destination'
                             label="Destination:"
                             type="text"
-                            required={true}
                             value={this.state.destination}
-                            index={7}
                             />
 
-                        <div>
-                            <label htmlFor='DriverNumber'>Driver:</label>
-                            <select id='DriverNumber' value={this.state.driverId} onChange={this.handleChangeDriver('driverId')}>
-                                <option>Select driver</option>
-                                {this.props.drivers.map((driver) => {
-                                return (
-                                    <option key={driver._id} data-driverInfo={driver._id + '::' + driver.fairNumber} value={driver.name + " " + driver.surname}>{driver.name} {driver.surname}</option>
-                                ) 
-                                })} 
-                            </select>
-                        </div>
-
-                        {/* <div>
-                            <label htmlFor='Remarks'>Remarks:</label>
-                            <textarea id='Remarks' value={this.state.booking.remarks} onChange={this.handleChange('remarks')} />
-                                
-                        </div> */}
+              
+                        <SelectInput
+                            //when select is reqiered the default value as empty string
+                            defaultValue={editingBooking ? this.state.assignedDriver : ""}
+                            defaultOption={editingBooking ? this.state.driverId : "Select driver"}
+                            required={true}
+                            onChange={this.getDataValue}
+                            value={this.props.driverId}
+                            idAttr="assignedDriver"
+                            name="assignedDriver"
+                            options={this.props.drivers.filter((driver) => {
+                                //if booking is being edited display only not selected one, selected one are provided with defaultValue and defaultOption prop
+                                driver._id !== this.state.driverId
+                            }).map((driver) => {
+                                    return ({
+                                        value: driver._id,
+                                        label: driver.name + " " + driver.surname
+                                    }) 
+                            })}
+                            //option in format
+                            //[{value: "Text", label: "Text"}, {value: "Test", label: "Text"}, ...]
+                                                    
+                        />
+                           <TextArea
+                            onChange={this.getDataValue}
+                            name='remarks'
+                            idAttr='remarks'
+                            label="Remarks:"
+                            value={this.state.remarks}
+                            />
 
                     </fieldset>
 

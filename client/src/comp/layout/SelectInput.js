@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
-import './InputText.css';
-
-export class InputText extends Component {
+import './SelectInput.css';
+export class SelectInput extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -13,16 +12,8 @@ export class InputText extends Component {
         }
     }
 
-      componentDidMount() {
-
-    //     this.validation(this.props.value);
-    //    if (this.props.validate) {
-    //          this.props.validate(this.props.name, this.state.valid)
-    //     }
-    }
-
     handleChange = (event) => {
-
+        console.log('event',event.target.selectedOptions[0].label)
         this.validation(event.target.value);
         //pass event object to parent component
         if (this.props.onChange) {
@@ -77,9 +68,6 @@ export class InputText extends Component {
         
     }
 
-    
-    
-    
     render() {
 
         const renderLabel = () => {
@@ -90,37 +78,38 @@ export class InputText extends Component {
             }
         }
 
-        // const renderErrorr = () => {
-        //      if (!this.state.valid && this.state.showErrorMessage) {
-        //         return (<div>x</div>);
-        //     }
-        // }
-
         const inputStyle = {
         }
 
         return (
             <div>
-                {renderLabel()}
-                <input 
-                style={inputStyle}
-                type={this.props.type} 
-                value={this.state.value} 
-                className = {(!this.state.valid && this.state.showErrorMessage) ? 'error-input' : 'standard-input' }
-                id={this.props.idAttr} 
-                onChange={this.handleChange}
-                onBlur={this.handleBlur}
-                data-additional={this.props.additinalData}
-                name={this.props.name}
-                required={this.props.required ? true : false} 
-                />
-                {this.props.required ? " *" : ""}
+                        <div>
+                            {renderLabel()}
+                            <select 
+                            id={this.props.idAttr} 
+                            value={this.state.value} 
+                            onChange={this.handleChange}
+                            onBlur={this.handleBlur}
+                            required={this.props.required ? true : false}
+                            className = {(!this.state.valid && this.state.showErrorMessage) ? 'error-input' : 'standard-input' }
+                            name={this.props.name}>
+                                <option value={this.props.defaultValue}>{this.props.defaultOption}</option>
+                                 {this.props.options.map((option, index) => {
+                                return (
+                                    <option key={index} value={option.value}>{option.label}</option>
+                                ) 
+                                })}  
+                            </select>
+                            {this.props.required ? " *" : ""}
+                        </div>
+                                  {/* //option in format
+                            //[{option: "Text", label: "Text"}, {option: "Test", label: "Text"}, ...] */}
             </div>
         );
     }
 }
 
 //default props
-InputText.defaultProps = {
+SelectInput.defaultProps = {
 
 }

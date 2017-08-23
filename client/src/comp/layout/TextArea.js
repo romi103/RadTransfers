@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
-import './InputText.css';
+import './TextArea.css';
 
-export class InputText extends Component {
+
+export class TextArea extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -102,15 +103,13 @@ export class InputText extends Component {
         return (
             <div>
                 {renderLabel()}
-                <input 
+                <textarea
                 style={inputStyle}
-                type={this.props.type} 
                 value={this.state.value} 
                 className = {(!this.state.valid && this.state.showErrorMessage) ? 'error-input' : 'standard-input' }
                 id={this.props.idAttr} 
                 onChange={this.handleChange}
                 onBlur={this.handleBlur}
-                data-additional={this.props.additinalData}
                 name={this.props.name}
                 required={this.props.required ? true : false} 
                 />
@@ -121,6 +120,6 @@ export class InputText extends Component {
 }
 
 //default props
-InputText.defaultProps = {
+TextArea.defaultProps = {
 
 }
