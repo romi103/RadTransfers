@@ -10,9 +10,6 @@ import {TextArea} from '../layout/TextArea.js';
 
 import $ from 'jquery';
 
-
-
-
 export class NewBooking extends Component {
 
     constructor(props) {  
@@ -144,10 +141,25 @@ export class NewBooking extends Component {
         this.props.dispatch(hideNewBookingModal());
      }
 
-    getDataValue = (event) => {
+    getDataValue = (event, additionalValue) => {
         let key = event.target.name; 
         this.setState({
                 [key] : event.target.value
+            });
+    }
+
+    getDataValueSelect = (event) => {
+        //keys (properties to be updated) comes from name attribute of the selectInput component
+        let selectInput = event.target;//
+        let value = selectInput.value;//value of driverId
+        let selectedOption = selectInput.options[selectInput.selectedIndex].innerHTML;//value of assignedDriver
+        let keys = event.target.name.split('::');//assignedDriver::driverId
+        let assignedDriver = keys[0];
+        let driverId = keys[1];
+
+        this.setState({
+                assignedDriver : value,
+                driverId: selectedOption
             });
     }
     //collects errors from inputs to this,error obj
@@ -260,13 +272,13 @@ export class NewBooking extends Component {
                             defaultValue={editingBooking ? this.state.assignedDriver : ""}
                             defaultOption={editingBooking ? this.state.driverId : "Select driver"}
                             required={true}
-                            onChange={this.getDataValue}
+                            onChange={this.getDataValueSelect}
                             value={this.props.driverId}
                             idAttr="assignedDriver"
-                            name="assignedDriver"
+                            name="assignedDriver::driverId"
                             options={this.props.drivers.filter((driver) => {
                                 //if booking is being edited display only not selected one, selected one are provided with defaultValue and defaultOption prop
-                                driver._id !== this.state.driverId
+                               return driver._id != this.state.assignedDriver
                             }).map((driver) => {
                                     return ({
                                         value: driver._id,

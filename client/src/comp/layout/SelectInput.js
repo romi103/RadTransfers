@@ -13,7 +13,8 @@ export class SelectInput extends Component {
     }
 
     handleChange = (event) => {
-        console.log('event',event.target.selectedOptions[0].label)
+        
+
         this.validation(event.target.value);
         //pass event object to parent component
         if (this.props.onChange) {
