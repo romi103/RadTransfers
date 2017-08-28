@@ -323,8 +323,14 @@ export const startEditDriver = (driver) => {
 
 export const removeDriverSave = (driver) => {
     return (dispatch, getState) => {
-        // ipcRenderer.send('removeDriver', driver);
-        dispatch(removeDriver(driver._id));
+            $.get('/removedriver/' + driver._id)
+                .done(() =>{
+                dispatch(removeDriver(driver._id));
+            })
+                .fail(() => {
+                alert("An error occured. Please contact support");
+            })
+       
     }
 }
 

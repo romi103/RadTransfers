@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import fs from 'fs';
 import http from 'http';
-// import { DriverForm } from 'DriverForm';
+import {InputText} from '../layout/InputText.js';
+import {SelectInput} from '../layout/SelectInput.js';
+import {TextArea} from '../layout/TextArea.js';
+import {InputFile} from '../layout/InputFile.js';
+
 
 
 export class DriverForm extends Component {
@@ -28,27 +32,54 @@ export class DriverForm extends Component {
                 notes: ''
 
         }
-
-        // this.props.handleTheSubmit();
-        // this.handleChange = this.handleChange.bind(this);
-        // this.handleSubmit = this.handleSubmit.bind(this);
-        // this.hideModal = this.hideModal.bind(this);
-       
-        // this.getDrivers = this.getDrivers.bind(this);
+              //*******************************/
+        //error object
+        //*******************************/
+        this.validInputs = {
+            
+                name: null,
+                surname: null,
+                address: null,
+                dob: null,
+                nin: null,
+                availableFrom: null,
+                availableTo: null,
+                photoPath: null,
+                licPath: null,
+                email: null,
+                carRegNo: null,
+                not: null
+        }
     }
 
-    handleChange(key) {
-        return (event) => {
-            let currentSate = this.state;
-            currentSate[key] = event.target.value
-            return this.setState(currentSate);
-        };
+    handleChange = (event) => {
+            let key = event.target.name; 
+                this.setState({
+                [key] : event.target.value
+            });
+
+        
     }
     
     handleSubmit = (event) => {
         event.preventDefault();
         
-        this.props.handleTheSubmit(this.state);
+        this.props.handleTheSubmit({
+                _id: this.state._id,
+                driverId: this.state.driverId,
+                name:  this.state.name,
+                surname:  this.state.surname,
+                address:  this.state.address,
+                dob:  this.state.dob,
+                nin: this.state.nin,
+                availableFrom:  this.state.availableFrom,
+                availableTo:  this.state.availableTo,
+                photoPath:  this.state.photoPath,
+                licPath:  this.state.licPath,
+                email:  this.state.email,
+                carRegNo:  this.state.carRegNo,
+                notes:this.state.notes
+        });
         this.hideModal();
     }
 
@@ -56,11 +87,26 @@ export class DriverForm extends Component {
     handleSubmitEdit = (event) => {
         event.preventDefault();
 
-        this.props.handleTheSubmitEdit(this.state);
+        this.props.handleTheSubmitEdit({
+                _id: this.state._id,
+                driverId: this.state.driverId,
+                name:  this.state.name,
+                surname:  this.state.surname,
+                address:  this.state.address,
+                dob:  this.state.dob,
+                nin: this.state.nin,
+                availableFrom:  this.state.availableFrom,
+                availableTo:  this.state.availableTo,
+                photoPath:  this.state.photoPath,
+                licPath:  this.state.licPath,
+                email:  this.state.email,
+                carRegNo:  this.state.carRegNo,
+                notes:this.state.notes
+        });
         this.hideModal();
     }
 
-    componentDidMount() {
+    componentWillMount() {
         const { editingDriver, driverBeingEdited} = this.props.modal
         if (editingDriver) {
             console.log('form state', driverBeingEdited )
@@ -68,30 +114,32 @@ export class DriverForm extends Component {
         }
     }
 
-    uploadPhoto = (key) => {
-        return (event) => {
+    uploadPhoto = (event) => {
+        let key = event.target.name; 
         let image = event.target.files[0]
             var reader = new FileReader();
             reader.readAsDataURL(image);
             reader.onload = () => {
 
                 let imageEncoded = reader.result
-                let currentSate = this.state;
-                currentSate[key] = imageEncoded;
-                return this.setState(currentSate);
+                this.setState({
+                    [key] : imageEncoded
+                });
             }
 
             reader.onerror = () => {
                 alert("An error occurerd. Please contact support.");
             }
-        }
     }
-
-
-   
 
     hideModal = () => {
         this.props.dispatch(hideDriverModal())
+    }
+
+       //collects errors from inputs to this,error obj
+    validateInput = (name, isValid) => {
+        this.validInputs[name] = isValid
+        console.log(this.validInputs);
     }
  
 
@@ -103,76 +151,142 @@ export class DriverForm extends Component {
 
         return (
             <div>
-                <form >
+                <form  onSubmit={editingDriver ? this.handleSubmitEdit : this.handleSubmit}>
                     <fieldset>
                     <legend>New Driver</legend>
+                        <InputText 
+                            onChange={this.handleChange}
+                            name='driverId'
+                            idAttr='driverId'
+                            label="Driver Number"
+                            type="number"
+                            required={true}
+                            value={this.state.driverId}
+                            validate={this.validateInput}
+                            /> 
 
-                        <div>
-                            <label htmlFor='driverNumber'>Driver Number</label>
-                            <input type="number" id='driverNumber' value={this.state.driverId} onChange={this.handleChange('driverId')} />
-                        </div>
+                     
 
-                        <div>
-                            <label htmlFor='surname'>Suranme / Family Name</label>
-                            <input type="text" id='surname' value={this.state.surname} onChange={this.handleChange('surname')}/>
-                        </div>
+                        <InputText 
+                            onChange={this.handleChange}
+                            name='surname'
+                            idAttr='surname'
+                            label="Suranme / Family Name"
+                            type="text"
+                            required={true}
+                            value={this.state.surname}
+                            validate={this.validateInput}
+                            /> 
 
-                        <div>
-                            <label htmlFor='fornames'>Fornames</label>
-                            <input type="text" id='fornames' value={this.state.name} onChange={this.handleChange('name')}/>
-                        </div>
+                        <InputText 
+                            onChange={this.handleChange}
+                            name='name'
+                            idAttr='name'
+                            label="Fornames"
+                            type="text"
+                            required={true}
+                            value={this.state.name}
+                            validate={this.validateInput}
+                            /> 
 
-                        <div>
-                            <label htmlFor='address'>Address</label>
-                            <input type="text" id='address' value={this.state.address} onChange={this.handleChange('address')}/>
-                        </div>
+                        <InputText 
+                            onChange={this.handleChange}
+                            name='address'
+                            idAttr='address'
+                            label="Address"
+                            type="text"
+                            required={true}
+                            value={this.state.address}
+                            validate={this.validateInput}
+                            /> 
 
-                        <div>
-                            <label htmlFor='dob'>Date of birth</label>
-                            <input type="date" id='dob' value={this.state.dob} onChange={this.handleChange('dob')}/>
-                        </div>
+                        <InputText 
+                            onChange={this.handleChange}
+                            name='dob'
+                            idAttr='dob'
+                            label="Date of birth"
+                            type="date"
+                            required={true}
+                            value={this.state.dob}
+                            validate={this.validateInput}
+                            /> 
 
-                        <div>
-                            <label htmlFor='nin'>Natinal Ins. No.</label>
-                            <input type="text" id='nin' value={this.state.nin} onChange={this.handleChange('nin')} />
-                        </div>
-                        
-                            <div>
-                                <label htmlFor='driver-available-from'>Driver became avaliable</label>
-                                <input type="date" id='driver-available-from' value={this.state.availableFrom} onChange={this.handleChange('availableFrom')} />
-                            </div>
+                        <InputText 
+                            onChange={this.handleChange}
+                            name='nin'
+                            idAttr='nin'
+                            label="Natinal Ins. No."
+                            type="text"
+                            required={true}
+                            value={this.state.nin}
+                            validate={this.validateInput}
+                            /> 
 
-                            <div>
-                                <label htmlFor='driver-available-to'>Ceased to be avaliable</label>
-                                <input type="date" id='driver-available-to' value={this.state.availableTo} 
-                                onChange={this.handleChange('availableTo')} />
-                            </div>
+                        <InputText 
+                            onChange={this.handleChange}
+                            name='availableFrom'
+                            idAttr='availableFrom'
+                            label="Driver became avaliable"
+                            type="date"
+                            required={true}
+                            value={this.state.availableFrom}
+                            validate={this.validateInput}
+                            /> 
+
+                        <InputText 
+                            onChange={this.handleChange}
+                            name='availableTo'
+                            idAttr='availableTo'
+                            label="Ceased to be avaliable"
+                            type="date"
+                            required={true}
+                            value={this.state.availableTo}
+                            validate={this.validateInput}
+                            /> 
                     
+                        <InputFile 
+                            onChange={this.uploadPhoto}
+                            name='photoPath'
+                            idAttr='photoPath'
+                            label="Driver Photo"
+                            required={editingDriver ? false : true}
+                            validate={this.validateInput}
+                            /> 
 
-                        <div>
-                            <label htmlFor="driver-photo">Driver Photo</label>
-                            <input type="file" accept="image/*" id='driver-photo' onChange={this.uploadPhoto('photoPath')} />
-                        </div>
+                        <InputFile 
+                            onChange={this.uploadPhoto}
+                            name='licPath'
+                            idAttr='licPath'
+                            label="Driver Lic Photocopy"
+                            required={editingDriver ? false : true}
+                            validate={this.validateInput}
+                            />  
 
-                        <div>
-                            <label htmlFor="driver-photo">Driver Lic Photocopy</label>
-                            <input type="file" accept="image/*" id='driver-lic-photo' onChange={this.uploadPhoto('licPath')}/>
-                        </div>
+                     
 
-                        <div>
-                            <label htmlFor='driver-email'>Driver Email</label>
-                            <input type="email" id='driver-email' value={this.state.email} onChange={this.handleChange('email')} />
-                        </div>
+                        <InputText 
+                            onChange={this.handleChange}
+                            name='email'
+                            idAttr='email'
+                            label="Driver Email"
+                            type="email"
+                            required={true}
+                            value={this.state.email}
+                            validate={this.validateInput}
+                            /> 
 
-                        <div>
-                            <label htmlFor='driver-notes'>Driver Notes</label>
-                            <textarea id='driver-notes' value={this.state.notes} onChange={this.handleChange('notes')} ></textarea>
-                        </div>
+                        <TextArea
+                            onChange={this.getDataValue}
+                            name='notes'
+                            idAttr='notes'
+                            label="Driver Notes:"
+                            value={this.state.notes}
+                            />
 
                     </fieldset>
 
                 
-                    <Button className="buttonForm" type='submit' onClick={editingDriver ? this.handleSubmitEdit :  this.handleSubmit}>Submit</Button>
+                    <Button className="buttonForm" type='submit'>Submit</Button>
                     <Button className="buttonForm" onClick={this.hideModal}>Close</Button>
                 </form>
             </div>

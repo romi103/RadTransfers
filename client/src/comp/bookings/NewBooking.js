@@ -50,31 +50,10 @@ export class NewBooking extends Component {
         this.hideModal = this.hideModal.bind(this);
     }
 
-    // handleChangeDriver(key) {
-    //     return (event) => {
-    //         let driverInfo = event.target.selectedOptions[0].dataset.driverinfo;
-    //         let driverInfoArr = driverInfo.split("::");
-    //         let driverId = driverInfoArr[0];
-    //         let driverFairNumber = driverInfoArr[1];
-    //         let driverName = event.target.value
-    //         let currentSate = this.state;
-    //         currentSate.assignedDriver = driverId;
-    //         currentSate.driverId = driverName;
-    //         currentSate.fairNumber = driverFairNumber;
-    //         return this.setState(currentSate);
-    //     };
-    // }
-
     componentWillMount() {
         const { editingBooking, bookingBeingEdited} = this.props.modal
         if (editingBooking) {
             this.setState(bookingBeingEdited);
-
-            
-        //     $.each(this.validInputs, (key, value) => {
-        //         this.validInputs[key] = true;
-        // })
-        //     console.log(this.errors);
         }
     }
 
@@ -113,10 +92,6 @@ export class NewBooking extends Component {
 
      handleSubmitEdit = (event) => {
         event.preventDefault();
-        // console.log(this.cannotBeSubmitted())
-        // if (this.cannotBeSubmitted()) {
-        //     return;
-        // }
         this.props.handleTheSubmitEdit({
                 _id: this.state._id,
                 refno: this.state.refno,
@@ -141,7 +116,7 @@ export class NewBooking extends Component {
         this.props.dispatch(hideNewBookingModal());
      }
 
-    getDataValue = (event, additionalValue) => {
+    getDataValue = (event) => {
         let key = event.target.name; 
         this.setState({
                 [key] : event.target.value
@@ -278,7 +253,12 @@ export class NewBooking extends Component {
                             name="assignedDriver::driverId"
                             options={this.props.drivers.filter((driver) => {
                                 //if booking is being edited display only not selected one, selected one are provided with defaultValue and defaultOption prop
-                               return driver._id != this.state.assignedDriver
+                                if(editingBooking) {
+                                    return driver._id != this.state.assignedDriver
+                                } else {
+                                    return true;
+                                }
+                               
                             }).map((driver) => {
                                     return ({
                                         value: driver._id,

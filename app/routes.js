@@ -131,6 +131,19 @@ module.exports = function (app) {
         });
     });
 
+        // =====================================
+    // REMOVING DRIVER ===============
+    // =====================================
+     app.get('/removedriver/:driverId', function (req, res) {
+
+        Drivers.find({
+            "_id": req.params.driverId
+        }).remove().exec(function(err, drivers) {
+            if (err) return handleError(err);
+            res.send(drivers)
+        })
+    });
+
      // =====================================
     // REMOVING BOOKING ===============
     // =====================================

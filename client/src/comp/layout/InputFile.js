@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
-import './InputText.css';
+import './InputFile.css';
 
-export class InputText extends Component {
+export class InputFile extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -100,10 +100,11 @@ export class InputText extends Component {
         return (
             <div>
                 {renderLabel()}
-                <input 
+      
+                <input
                 style={inputStyle}
-                type={this.props.type} 
-                value={this.state.value} 
+                type="file"
+                accept="image/*"
                 className = {(!this.state.valid && this.state.showErrorMessage) ? 'error-input' : 'standard-input' }
                 id={this.props.idAttr} 
                 onChange={this.handleChange}
@@ -119,6 +120,6 @@ export class InputText extends Component {
 }
 
 //default props
-InputText.defaultProps = {
+InputFile.defaultProps = {
 
 }
