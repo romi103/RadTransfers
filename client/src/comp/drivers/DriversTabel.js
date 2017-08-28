@@ -3,6 +3,7 @@ import { getInitialState, showDriverModal} from '../../store/action/action.js';
 import { connect } from 'react-redux';
 import { DriversRow } from './DriversRow.js';
 import { DriverFormContainer } from './DriverFormContainer.js';
+import {Loader} from '../layout/Loader.js';
 
 import { Modal, Button, Table } from 'react-bootstrap';
 
@@ -23,7 +24,15 @@ export class DriversTabel extends Component {
 
     render() {
 
-        let { drivers, dispatch, modal} = this.props;      
+        let { drivers, dispatch, modal, loadingStatus} = this.props;
+        
+        const showLoader = () => {
+            if (loadingStatus.driverLoading) {
+                return (
+                    <Loader/>
+                )
+            }
+        }
         return (
             <div>
 
@@ -34,6 +43,9 @@ export class DriversTabel extends Component {
                 <Button bsStyle="primary" bsSize="large" className="actionButton" onClick={this.showModal}>New Driver</Button>
                 <hr />
                 <input type="text" id='searchTable' placeholder="Search" />
+
+                {showLoader()}
+                
                 <Table striped bordered condensed hover>
                     <thead>
                         <tr>

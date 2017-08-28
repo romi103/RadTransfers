@@ -247,9 +247,12 @@ export const hideDriverModal = () => {
 //--------- drivers - action
 export const fetchDrivers = () => {
     return (dispatch, getState) => {
+            dispatch(loadingDriversStart());
             $.get('/getdrivers')
             .done((drivers) => {
                     dispatch(setInitialDrivers(drivers));
+                    dispatch(loadingDriversStop());
+                    
                 })
             .fail(() => {
             alert("An error occured. Please contact support");
@@ -341,6 +344,18 @@ export const removeDriver = (id) => {
     }
 }
 
+export const loadingDriversStart = () => {
+    return {
+        type: 'LOADING_DRIVERS_START',
+        driverLoading: true
+    }
+}
 
+export const loadingDriversStop = () => {
+    return {
+        type: 'LOADING_DRIVERS_STOP',
+        driverLoading: false
+    }
+}
 
 

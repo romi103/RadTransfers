@@ -7,7 +7,9 @@ import { getDrivers } from '../../store/action/action.js';
 const  mapStateToProps = (state) => {
     return ({
         drivers: state.drivers,
-        modal: state.modal
+        modal: state.modal,
+        loadingStatus: state.loadingStatus
+
     })
 }
 
