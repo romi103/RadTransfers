@@ -6,7 +6,7 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-import  {Main} from './comp/Main.js';
+import  {MainContainer} from './comp/MainContainer.js';
 import  Bookings from './comp/bookings/Bookings.js';
 import  Drivers from './comp/drivers/Drivers.js';
 import  Vehicles from './comp/Vehicles.js';
@@ -30,7 +30,7 @@ store.dispatch(actions.fetchDrivers());
 ReactDOM.render(
     <Provider store={store}>
         <Router history={hashHistory}>
-            <Route path="/" component={Main}>
+            <Route path="/" component={MainContainer}>
                 <Route path='drivers' component={Drivers}/>
                 <Route path='vehicles' component={Vehicles}/>
                 <Route path='complaints' component={Complaints}/>

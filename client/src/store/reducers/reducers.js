@@ -203,12 +203,12 @@ export const confimBookingReducer = (state = {driverBeingConfirmed: undefined, b
     }
 }
 
-export const loadingReducer = (state = {driverLoading: false, bookingLoading: false}, action) => {
+export const loadingReducer = (state = {loading: false}, action) => {
     switch (action.type) {
-        case 'LOADING_DRIVERS_START':
-            return Object.assign({}, state, {driverLoading: action.driverLoading});
-        case 'LOADING_DRIVERS_STOP':
-            return Object.assign({}, state, {driverLoading: action.driverLoading});
+        case 'LOADING_START':
+            return Object.assign({}, state, {loading: action.loading});
+        case 'LOADING_STOP':
+            return Object.assign({}, state, {loading: action.loading});
         default:
         
             return state;

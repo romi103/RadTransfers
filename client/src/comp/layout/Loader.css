@@ -4,8 +4,8 @@
 
 #loader span {
     display: inline-block;
-    height: 12px;
-    width: 12px;
+    height: 20px;
+    width: 20px;
     margin: 5px;
     border-radius: 50%;
     background: rgba(0, 0, 0, 0.2);
@@ -29,7 +29,7 @@
     }
     20% {
         opacity: 1;
-        background-color: #f57f17;
+        background-color: #436EE4;
     }
     100% {
         opacity: 1;

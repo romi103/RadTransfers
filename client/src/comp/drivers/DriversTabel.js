@@ -26,13 +26,6 @@ export class DriversTabel extends Component {
 
         let { drivers, dispatch, modal, loadingStatus} = this.props;
         
-        const showLoader = () => {
-            if (loadingStatus.driverLoading) {
-                return (
-                    <Loader/>
-                )
-            }
-        }
         return (
             <div>
 
@@ -43,8 +36,6 @@ export class DriversTabel extends Component {
                 <Button bsStyle="primary" bsSize="large" className="actionButton" onClick={this.showModal}>New Driver</Button>
                 <hr />
                 <input type="text" id='searchTable' placeholder="Search" />
-
-                {showLoader()}
                 
                 <Table striped bordered condensed hover>
                     <thead>

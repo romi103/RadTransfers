@@ -23,12 +23,14 @@ export const saveBooking = (booking) => {
             _id: uuidV1(),
             bookingOrederNo: bookingOrederNo
         }
-
+        dispatch(loadingStart());
        $.post('/newbooking', bookingMod)
        .done(() =>{
            dispatch(addBooking(bookingMod))
+           dispatch(loadingStop());
             })
         .fail(() => {
+                dispatch(loadingStop());
                 alert("An error occured. Please contact support")
             })
     
@@ -51,15 +53,17 @@ export const confirmBookingSave = (booking) => {
             let driverData = driversState.filter((driver) => {
                 return driver._id == assignedDriverId
             })
-
+            dispatch(loadingStart());
            $.post('/confirm/', { booking: booking, driver: driverData })
                 .done(() =>{
                     dispatch(confirmBooking(booking._id));
                     dispatch(driverConfirmedEmailReset());
                     dispatch(bookingConfirmedEmailReset());
+                    dispatch(loadingStop());
                     alert("Conformation email sent.")
             })
                 .fail((err) => {
+                    dispatch(loadingStop());
                     alert("An error occured. Please contact support", err);
             })           
             }
@@ -77,11 +81,14 @@ export const confirmBooking = (id) => {
 export const saveEditBooking = (booking) => {
 
     return (dispatch, getState) => {
+        dispatch(loadingStart());
          $.post('/saveeditbooking', booking)
             .done(() =>{
                 dispatch(editBooking(booking));
+                dispatch(loadingStop());
             })
             .fail(() => {
+                dispatch(loadingStop());
                 alert("An error occured. Please contact support")
             })
     }
@@ -146,13 +153,15 @@ export const cancelBookingSave = (booking) => {
                 return driver._id == assignedDriverId
             })
 
-
+            dispatch(loadingStart());
          $.post('/cancelbooking', { booking: booking, driver: driverData  })
             .done(() =>{
            dispatch(cancelBooking(booking._id));
+           dispatch(loadingStop());
            alert("Cancelation email sent.");
         })
         .fail(() => {
+            dispatch(loadingStop());
             alert("An error occured. Please contact support");
         })
     }
@@ -168,11 +177,14 @@ export const cancelBooking = (id) => {
 // ---------- Booking removal
 export const removeBookingSave = (booking) => {
     return (dispatch, getState) => {
+        dispatch(loadingStart());
         $.get('/removebooking/' + booking._id)
        .done(() =>{
            dispatch(removeBooking(booking._id));
+           dispatch(loadingStop());
        })
         .fail(() => {
+            dispatch(loadingStop());
             alert("An error occured. Please contact support");
         })
         
@@ -192,11 +204,14 @@ export const getInitialState = () => {
     return (dispatch, getState) => {
 
         let fetchData = new Promise((resolve, reject) => {
+            dispatch(loadingStart());
         $.get("/getbookings", (bookings) =>{
             console.log(bookings);
+            dispatch(loadingStop());
             resolve(bookings);
         })
         }).then((bookings) => {
+            dispatch(loadingStop());
             dispatch(setInitialState(bookings));
         })
     }
@@ -247,14 +262,15 @@ export const hideDriverModal = () => {
 //--------- drivers - action
 export const fetchDrivers = () => {
     return (dispatch, getState) => {
-            dispatch(loadingDriversStart());
+            dispatch(loadingStart());
             $.get('/getdrivers')
             .done((drivers) => {
                     dispatch(setInitialDrivers(drivers));
-                    dispatch(loadingDriversStop());
+                    dispatch(loadingStop());
                     
                 })
             .fail(() => {
+            dispatch(loadingStop());
             alert("An error occured. Please contact support");
         })
     }
@@ -276,11 +292,14 @@ export const saveDriver = (driver) => {
             ...driver,
             _id: uuidV1()
         }
+        dispatch(loadingStart());
         $.post('/savedriver', driverMod)
             .done(() =>{
                 dispatch(addDriver(driverMod))
+                dispatch(loadingStop());
             })
             .fail(() => {
+                dispatch(loadingStop());
                 alert("An error occured. Please contact support")
             })
     }
@@ -290,11 +309,14 @@ export const saveDriver = (driver) => {
 export const saveEditDriver = (driver) => {
 
     return (dispatch, getState) => {
+        dispatch(loadingStart());
          $.post('/saveeditdriver', driver)
             .done(() =>{
                 dispatch(editDriver(driver));
+                dispatch(loadingStop());
             })
             .fail(() => {
+                dispatch(loadingStop());
                 alert("An error occured. Please contact support")
             })
     }
@@ -326,11 +348,14 @@ export const startEditDriver = (driver) => {
 
 export const removeDriverSave = (driver) => {
     return (dispatch, getState) => {
+            dispatch(loadingStart());
             $.get('/removedriver/' + driver._id)
                 .done(() =>{
                 dispatch(removeDriver(driver._id));
+                dispatch(loadingStop());
             })
                 .fail(() => {
+                dispatch(loadingStop());
                 alert("An error occured. Please contact support");
             })
        
@@ -344,17 +369,17 @@ export const removeDriver = (id) => {
     }
 }
 
-export const loadingDriversStart = () => {
+export const loadingStart = () => {
     return {
-        type: 'LOADING_DRIVERS_START',
-        driverLoading: true
+        type: 'LOADING_START',
+        loading: true
     }
 }
 
-export const loadingDriversStop = () => {
+export const loadingStop = () => {
     return {
-        type: 'LOADING_DRIVERS_STOP',
-        driverLoading: false
+        type: 'LOADING_STOP',
+        loading: false
     }
 }
 

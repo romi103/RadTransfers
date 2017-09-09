@@ -12,10 +12,10 @@ export class Loader extends Component {
     render() {
         return (
             <div id="loader">
-                <p>Loading...</p>
                 <span></span>
                 <span></span>
                 <span></span>
+                {/* <p>Loading...</p> */}
             </div>
         )
     }
