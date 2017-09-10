@@ -3,13 +3,14 @@ import { getInitialState, showNewBookingModal} from '../../store/action/action.j
 import { connect } from 'react-redux';
 import { BookingRow }  from './BookingRow.js';
 import { NewBookingContainer} from './NewBookingContainer.js';
+import {CSVLink, CSVDownload} from 'react-csv';
+import moment from 'moment';
 // import  { Search }  from 'Search';
 
 // import { , ButModalton, Table } from 'react-bootstrap';
 import { DropdownButton, MenuItem, Button, Glyphicon, Table, Modal} from 'react-bootstrap';
 
-//exporting data
-import json2csv from 'json2csv';
+
 import fs from 'fs';
 // const {dialog} = require('electron').remote;
 // import Button from 'react-bootstrap/lib/Button';
@@ -47,27 +48,6 @@ export default class BookingTable extends Component {
           this.props.dispatch(showNewBookingModal())
     }
 
-    saveFile = () => {
-        const bookingData = this.props.bookings;
-
-        
-
-        // const path = dialog.showSaveDialog({
-        //     title: 'Booking Export',
-        //     filters: [
-        //     {name: 'CSV', extensions: ['csv']}
-        //     ]});
-
-        // const csv = json2csv({ data: bookingData});
- 
-        //     fs.writeFile(path, csv, function(err) {
-        //         if (err) throw err;
-        //             console.log('file saved');
-        //     });
-
-
-
-    } 
 
     toggleNow = () => {
         let {searchDateNow} = this.state;
@@ -182,7 +162,10 @@ export default class BookingTable extends Component {
 
             <div>
                 <div>
-                    <Button bsStyle="primary" bsSize="large" onClick={this.saveFile}>Export Booking</Button>
+                    <CSVLink 
+                        data={sortedBookings} 
+                        className="btn btn-primary"
+                        filename={moment().format("Do_MMM_YYYY") + "_bookings.csv"}>Export Bookings</CSVLink>
                 </div>
         
                  <Modal show={modal.showNewBookingModal}>
