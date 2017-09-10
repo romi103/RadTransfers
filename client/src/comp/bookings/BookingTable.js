@@ -5,6 +5,8 @@ import { BookingRow }  from './BookingRow.js';
 import { NewBookingContainer} from './NewBookingContainer.js';
 import {CSVLink, CSVDownload} from 'react-csv';
 import moment from 'moment';
+//import Pagination from 'react-js-pagination/src/components/Pagination.js';
+import Pagination from "react-js-pagination";
 // import  { Search }  from 'Search';
 
 // import { , ButModalton, Table } from 'react-bootstrap';
@@ -39,6 +41,8 @@ export default class BookingTable extends Component {
             searchTo: today,
             advancedSearch: false,
             searchDateNow: true,
+            activePage: 1,
+            bookingsPerPage: 15
 
         }
     
@@ -106,6 +110,11 @@ export default class BookingTable extends Component {
        } 
     }
 
+    handlePageChange = (pageNumber) => {
+        console.log(`active page is ${pageNumber}`);
+        this.setState({activePage: pageNumber});
+      }
+
 
         
 
@@ -147,13 +156,16 @@ export default class BookingTable extends Component {
             return <BookingRow key={booking._id} booking={booking} dispatch={dispatch} /> 
         })
 
-        
+        //logic for pagination
+        const indexOfLastBooking = this.state.bookingsPerPage * this.state.activePage;
+        const indexOfFirstBooking = indexOfLastBooking - this.state.bookingsPerPage;
+
         //decides whether to apply advanced search or basic one. 
         var filteredBookings = () => {
             if (this.state.advancedSearch) {
-                return datefilteredBookings;
+                return datefilteredBookings.slice(indexOfFirstBooking, indexOfLastBooking);
              } else {
-                return basicfilteredBookings;
+                return basicfilteredBookings.slice(indexOfFirstBooking, indexOfLastBooking);
              }
         }
         
@@ -165,7 +177,8 @@ export default class BookingTable extends Component {
                     <CSVLink 
                         data={sortedBookings} 
                         className="btn btn-primary"
-                        filename={moment().format("Do_MMM_YYYY") + "_bookings.csv"}>Export Bookings</CSVLink>
+                        filename={moment().format("Do_MMM_YYYY") + "_bookings.csv"}>Export Bookings
+                    </CSVLink>
                 </div>
         
                  <Modal show={modal.showNewBookingModal}>
@@ -218,6 +231,15 @@ export default class BookingTable extends Component {
                         {filteredBookings()}
                     </tbody>
                  </Table>
+                 <div>
+                    <Pagination
+                    activePage={this.state.activePage}
+                    itemsCountPerPage={this.state.bookingsPerPage}
+                    totalItemsCount={bookings.length}
+                    pageRangeDisplayed={3}
+                    onChange={this.handlePageChange}
+                    />
+                 </div>
             </div>
         );
     }

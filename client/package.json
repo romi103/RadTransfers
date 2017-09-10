@@ -18,6 +18,7 @@
     "react-bootstrap": "^0.31.2",
     "react-dom": "^15.6.1",
     "react-html-email": "^1.2.0",
+    "react-js-pagination": "^2.2.0",
     "react-redux": "^5.0.5",
     "react-router": "^2.0.0",
     "react-scripts": "1.0.10",
