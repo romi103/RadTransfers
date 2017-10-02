@@ -3,6 +3,7 @@ import uuidV1 from 'uuid/v1';
  
 import React, { Component } from 'react';
 import $ from 'jquery';
+import { getAccessToken } from '../../auth/auth.js';
 // import { pdfCreator } from '../../emailAPI/pdfCreator.js';
 // import mailcomposer from 'mailcomposer';
 // var pdfMake = require("pdfmake");
@@ -205,7 +206,12 @@ export const getInitialState = () => {
 
         let fetchData = new Promise((resolve, reject) => {
             dispatch(loadingStart());
-        $.get("/getbookings", (bookings) =>{
+        $.get({
+            url: "/getbookings",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', `Bearer ${getAccessToken()}`);
+            }
+        }, (bookings) =>{
             console.log(bookings);
             dispatch(loadingStop());
             resolve(bookings);
@@ -263,7 +269,12 @@ export const hideDriverModal = () => {
 export const fetchDrivers = () => {
     return (dispatch, getState) => {
             dispatch(loadingStart());
-            $.get('/getdrivers')
+            $.get({
+                url: '/getdrivers',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', `Bearer ${getAccessToken()}`);
+                }
+            })
             .done((drivers) => {
                     dispatch(setInitialDrivers(drivers));
                     dispatch(loadingStop());

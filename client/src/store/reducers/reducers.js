@@ -214,3 +214,21 @@ export const loadingReducer = (state = {loading: false}, action) => {
             return state;
     }
 }
+
+export const userLoginReducer = (state = {
+    isFetching: false,
+    isAuthenticated: false
+}, action) => {
+        switch (action.type) {
+            case 'LOGIN_REQUEST':
+                return Object.assign({}, state, {
+                    isFetching: action.isFetching, isAuthenticated: action.isAuthenticated
+                });
+            case 'LOGIN_SUCCESS':
+                return Object.assign({}, state, {
+                    isFetching: action.isFetching, isAuthenticated: action.isAuthenticated
+                });
+        default:
+            return state
+        }
+    }

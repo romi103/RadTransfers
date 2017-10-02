@@ -55,7 +55,7 @@ var fonts = {
     
     
     //We pass the api_key and domain to the wrapper, or it won't be able to identify + send emails
-    const mailgunConfig = mailgun({apiKey: keys.apiKey, domain: keys.domain});
+    const mailgunConfig = mailgun({apiKey: process.env.EMAIL_KEY || keys.apiKey, domain: process.env.EMAIL_DOMAIN ||keys.domain});
 
      const mail = mailcomposer({
                 from: 'you@samples.mailgun.org',

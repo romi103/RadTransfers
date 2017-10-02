@@ -115,9 +115,6 @@ export default class BookingTable extends Component {
         this.setState({activePage: pageNumber});
       }
 
-
-        
-
     render() {
 
         var { bookings, dispatch, modal} = this.props;

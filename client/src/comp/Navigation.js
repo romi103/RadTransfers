@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, IndexLink } from 'react-router';
 import { Glyphicon} from 'react-bootstrap';
+import { login, logout, isLoggedIn } from '../auth/auth.js';
 
 var Navbar = (props) => {
 
@@ -24,6 +25,13 @@ var Navbar = (props) => {
                         <li>
                             <Link to="/complaints" activeClassName='active' className='link'><Glyphicon glyph="exclamation-sign" /> Complaints</Link>
                         </li>
+                    </ul>
+                    <ul className="nav navbar-nav navbar-right">
+                        {
+                            (isLoggedIn()) ? <li><button className="btn btn-danger log" onClick={() => logout()}>Log out </button></li> :  <li><button className="btn btn-info log" onClick={() => login()}>Log In</button></li>
+                        }
+                       
+                        
                     </ul>
                 </div>
             </div>
