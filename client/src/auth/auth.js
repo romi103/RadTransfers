@@ -71,15 +71,18 @@
 import decode from 'jwt-decode';
 import { browserHistory } from 'react-router';
 import auth0 from 'auth0-js';
+import keys from '../keys/keys.js';
 const ID_TOKEN_KEY = 'id_token';
+// const keys = require('../keys/keys.js');
+
 const ACCESS_TOKEN_KEY = 'access_token';
 
 // const CLIENT_ID = '{AUTH0_CLIENT_ID}';
-const CLIENT_ID = 'eaZ4LwBKv4RJHGazkBQn23sTrusYtJ1H';
+const CLIENT_ID = process.env.AUTH0_CLIENT_ID || keys.AUTH0_CLIENT_ID;
 
 const CLIENT_DOMAIN = 'radstransfer.eu.auth0.com';
 // const REDIRECT = 'YOUR_CALLBACK_URL';
-const REDIRECT = 'http://localhost:3000/callback';
+const REDIRECT = process.env.REDIRECT || keys.REDIRECT;
 
 //const SCOPE = 'YOUR_SCOPE';
 const SCOPE = 'read:alldata';
@@ -109,7 +112,7 @@ export function logout() {
 
 export function requireAuth(nextState, replace) {
   if (!isLoggedIn()) {
-    replace({pathname: '/'});
+    replace({pathname: '/login'});
   }
 }
 

@@ -13,6 +13,7 @@ import  Vehicles from './comp/Vehicles.js';
 import  Complaints from './comp/Complaints.js';
 import  Home from './comp/Home.js';
 import  Callback from './comp/Callback.js';
+import Login from './comp/Login.js';
 import { requireAuth } from './auth/auth.js';
 
 
@@ -33,9 +34,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 // store.dispatch(actionsAuth.userLogin(auth))
 //getting booking
-store.dispatch(actions.getInitialState());
+// store.dispatch(actions.getInitialState());
 //getting drivers
-store.dispatch(actions.fetchDrivers());
+// store.dispatch(actions.fetchDrivers());
 
 
 store.subscribe(() => {
@@ -52,6 +53,7 @@ ReactDOM.render(
                 <Route path='complaints' component={Complaints} onEnter={requireAuth}/>
                 <Route path='bookings' component={Bookings} onEnter={requireAuth}/>
                 <Route path='callback' component={Callback} />
+                <Route path='login' component={Login} />
                 <IndexRoute component={Home} />
             </Route>
         </Router>

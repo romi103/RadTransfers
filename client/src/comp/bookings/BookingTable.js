@@ -53,6 +53,11 @@ export default class BookingTable extends Component {
     }
 
 
+    componentDidMount() {
+        this.props.dispatch(getInitialState());
+    }
+
+
     toggleNow = () => {
         let {searchDateNow} = this.state;
         

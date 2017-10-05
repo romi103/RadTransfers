@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getInitialState, showDriverModal} from '../../store/action/action.js';
+import { getInitialState, showDriverModal, fetchDrivers} from '../../store/action/action.js';
 import { connect } from 'react-redux';
 import { DriversRow } from './DriversRow.js';
 import { DriverFormContainer } from './DriverFormContainer.js';
@@ -15,6 +15,10 @@ export class DriversTabel extends Component {
         super(props);
         this.showModal = this.showModal.bind(this);
     
+    }
+
+    componentDidMount() {
+        this.props.dispatch(fetchDrivers())
     }
 
     showModal() {
