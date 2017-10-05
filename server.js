@@ -47,19 +47,19 @@ app.set('views', './app/views')
 app.set('view engine', 'ejs')
 
 
-var jwtCheck = jwt({
-  secret: jwks.expressJwtSecret({
-      cache: true,
-      rateLimit: true,
-      jwksRequestsPerMinute: 5,
-      jwksUri: "https://radstransfer.eu.auth0.com/.well-known/jwks.json"
-  }),
-  audience: 'http://radstransfersapi.co.uk',
-  issuer: "https://radstransfer.eu.auth0.com/",
-  algorithms: ['RS256']
-});
+// var jwtCheck = jwt({
+//   secret: jwks.expressJwtSecret({
+//       cache: true,
+//       rateLimit: true,
+//       jwksRequestsPerMinute: 5,
+//       jwksUri: "https://radstransfer.eu.auth0.com/.well-known/jwks.json"
+//   }),
+//   audience: 'http://radstransfersapi.co.uk',
+//   issuer: "https://radstransfer.eu.auth0.com/",
+//   algorithms: ['RS256']
+// });
 
-app.use(jwtCheck);
+// app.use(jwtCheck);
 
 
 // import routes
