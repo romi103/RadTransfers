@@ -1,3 +1,9 @@
+//creates enviromental variables - looks for .env file in the root folder and set'em up so they can be accessed by process.env object
+/* eslint-disable import/first */
+import dotenv from 'dotenv';
+dotenv.config();
+/* eslint-disable import/first */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Route, Router, IndexRoute, hashHistory, browserHistory } from 'react-router';

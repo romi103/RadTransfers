@@ -2,5 +2,5 @@ cra-server-ex.graffle
 node_modules
 npm-debug.log
 /node_modules
-app/keys/*
-config/*
+
+.env

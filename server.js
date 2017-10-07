@@ -1,10 +1,12 @@
+//creates enviromental variables - looks for .env file in the root folder and set'em up so they can be accessed by process.env object
+require('dotenv').config()
+
 const express = require("express");
 const fs = require("fs");
 var mongoose = require('mongoose');
 var passport = require('passport');
 var morgan = require('morgan');
 var bodyParser = require('body-parser')
-var configDB = require('./config/database.js');
 var path = require('path');
 const cors = require('cors');
 const jwt = require('express-jwt');
@@ -28,7 +30,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, 'client/build')));
 }
 
-mongoose.connect(process.env.MONGODB_URI || configDB.url);
+mongoose.connect(process.env.MONGODB_URI);
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));

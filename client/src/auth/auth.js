@@ -68,21 +68,21 @@
 //   }
 // }
 
+
+
 import decode from 'jwt-decode';
 import { browserHistory } from 'react-router';
 import auth0 from 'auth0-js';
-import keys from '../keys/keys.js';
 const ID_TOKEN_KEY = 'id_token';
-// const keys = require('../keys/keys.js');
 
 const ACCESS_TOKEN_KEY = 'access_token';
 
 // const CLIENT_ID = '{AUTH0_CLIENT_ID}';
-const CLIENT_ID = process.env.AUTH0_CLIENT_ID || keys.AUTH0_CLIENT_ID;
+const CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID;
 
 const CLIENT_DOMAIN = 'radstransfer.eu.auth0.com';
 // const REDIRECT = 'YOUR_CALLBACK_URL';
-const REDIRECT = process.env.REDIRECT || keys.REDIRECT;
+const REDIRECT = process.env.REACT_APP_REDIRECT;
 
 //const SCOPE = 'YOUR_SCOPE';
 const SCOPE = 'read:alldata';
@@ -94,6 +94,8 @@ var auth = new auth0.WebAuth({
   clientID: CLIENT_ID,
   domain: CLIENT_DOMAIN
 });
+
+
 
 export function login() {
   auth.authorize({
