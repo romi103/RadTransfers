@@ -4,6 +4,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 /* eslint-disable import/first */
 
+console.log(process.env.REACT_APP_REDIRECT)
+console.log(process.env.REACT_APP_AUTH0_CLIENT_ID)
+console.log(process.env.REACT_APP_CLIENT_DOMAIN)
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Route, Router, IndexRoute, hashHistory, browserHistory } from 'react-router';
