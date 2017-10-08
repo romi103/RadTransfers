@@ -61,6 +61,13 @@ var jwtCheck = jwt({
   algorithms: ['RS256']
 });
 
+// Express only serves static assets in production, proxy dosen't work in production
+if (process.env.NODE_ENV === "production") {
+  app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+}
+
 app.use(jwtCheck);
 
 
@@ -69,12 +76,7 @@ app.use(jwtCheck);
 require('./app/routes.js')(app);
 require('./app/routesEmails.js')(app);
 
-// Express only serves static assets in production, proxy dosen't work in production
-if (process.env.NODE_ENV === "production") {
-  app.get('/*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-  });
-}
+
 
 
 app.listen(app.get("port"), () => {
