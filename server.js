@@ -64,11 +64,14 @@ app.set('view engine', 'ejs')
 // app.use(jwtCheck);
 
 
+
 // import routes
 require('./app/routes.js')(app);
 require('./app/routesEmails.js')(app);
 
-
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.listen(app.get("port"), () => {
   console.log(`Find the server at: http://localhost:${app.get("port")}/`); // eslint-disable-line no-console
