@@ -49,19 +49,19 @@ app.set('views', './app/views')
 app.set('view engine', 'ejs')
 
 
-// var jwtCheck = jwt({
-//   secret: jwks.expressJwtSecret({
-//       cache: true,
-//       rateLimit: true,
-//       jwksRequestsPerMinute: 5,
-//       jwksUri: "https://radstransfer.eu.auth0.com/.well-known/jwks.json"
-//   }),
-//   audience: 'http://radstransfersapi.co.uk',
-//   issuer: "https://radstransfer.eu.auth0.com/",
-//   algorithms: ['RS256']
-// });
+var jwtCheck = jwt({
+  secret: jwks.expressJwtSecret({
+      cache: true,
+      rateLimit: true,
+      jwksRequestsPerMinute: 5,
+      jwksUri: "https://radstransfer.eu.auth0.com/.well-known/jwks.json"
+  }),
+  audience: 'http://radstransfersapi.co.uk',
+  issuer: "https://radstransfer.eu.auth0.com/",
+  algorithms: ['RS256']
+});
 
-// app.use(jwtCheck);
+app.use(jwtCheck);
 
 
 
@@ -69,9 +69,13 @@ app.set('view engine', 'ejs')
 require('./app/routes.js')(app);
 require('./app/routesEmails.js')(app);
 
-app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
+// Express only serves static assets in production, proxy dosen't work in production
+if (process.env.NODE_ENV === "production") {
+  app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+}
+
 
 app.listen(app.get("port"), () => {
   console.log(`Find the server at: http://localhost:${app.get("port")}/`); // eslint-disable-line no-console
