@@ -1,9 +1,9 @@
-module.exports = function (app) {
+module.exports = function (app, jwtCheck) {
 
     var Bookings = require('./models/newbooking.js')
     var Drivers = require('./models/drivers.js')
 
-     app.post('/newbooking', function (req, res, next) {
+     app.post('/newbooking', jwtCheck, function (req, res, next) {
         
         var newBooking = new Bookings();
         console.log(req.body);
@@ -30,7 +30,7 @@ module.exports = function (app) {
     // =====================================
     // SAVING DRIVER ===============
     // =====================================
-      app.post('/savedriver', function (req, res, next) {
+      app.post('/savedriver', jwtCheck, function (req, res, next) {
         var newDriver = new Drivers();
         newDriver._id = req.body._id,
         newDriver.driverId = req.body.driverId,
@@ -53,7 +53,7 @@ module.exports = function (app) {
     // =====================================
     // EDIT-SAVING DRIVER ===============
     // =====================================
-      app.post('/saveeditdriver', function (req, res, next) {
+      app.post('/saveeditdriver', jwtCheck, function (req, res, next) {
         
         Drivers.update({ _id: req.body._id }, { $set: { 
                 _id: req.body._id,
@@ -79,7 +79,7 @@ module.exports = function (app) {
     // =====================================
     // EDIT-SAVING DRIVER ===============
     // =====================================
-      app.post('/saveeditbooking', function (req, res, next) {
+      app.post('/saveeditbooking',jwtCheck, function (req, res, next) {
         
         Bookings.update({ _id: req.body._id }, { $set: { 
                   _id: req.body._id,
@@ -110,7 +110,7 @@ module.exports = function (app) {
        // =====================================
     // GETTING LIST OF BOOKINGS ===============
     // =====================================
-    app.get('/getbookings', function (req, res) {
+    app.get('/getbookings',jwtCheck, function (req, res) {
 
         var bookings = Bookings.find().exec(function (err, bookings) {
             // console.log(bookings)
@@ -122,7 +122,7 @@ module.exports = function (app) {
           // =====================================
     // GETTING LIST OF DRIVERS ===============
     // =====================================
-    app.get('/getdrivers', function (req, res) {
+    app.get('/getdrivers', jwtCheck, function (req, res) {
 
         var drivers = Drivers.find().exec(function (err, drivers) {
             // console.log(drivers)
@@ -134,7 +134,7 @@ module.exports = function (app) {
         // =====================================
     // REMOVING DRIVER ===============
     // =====================================
-     app.get('/removedriver/:driverId', function (req, res) {
+     app.get('/removedriver/:driverId', jwtCheck,function (req, res) {
 
         Drivers.find({
             "_id": req.params.driverId
@@ -147,7 +147,7 @@ module.exports = function (app) {
      // =====================================
     // REMOVING BOOKING ===============
     // =====================================
-     app.get('/removebooking/:bookingId', function (req, res) {
+     app.get('/removebooking/:bookingId',jwtCheck, function (req, res) {
 
         Bookings.find({
             "_id": req.params.bookingId

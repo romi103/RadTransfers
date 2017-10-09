@@ -61,22 +61,22 @@ var jwtCheck = jwt({
   algorithms: ['RS256']
 });
 
+
+
+//app.use(jwtCheck);
+
+
+
+// import routes
+require('./app/routes.js')(app,jwtCheck);
+require('./app/routesEmails.js')(app,jwtCheck);
+
 // Express only serves static assets in production, proxy dosen't work in production
 if (process.env.NODE_ENV === "production") {
   app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
   });
 }
-
-app.use(jwtCheck);
-
-
-
-// import routes
-require('./app/routes.js')(app);
-require('./app/routesEmails.js')(app);
-
-
 
 
 app.listen(app.get("port"), () => {

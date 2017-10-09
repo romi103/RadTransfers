@@ -1,4 +1,4 @@
-module.exports = function (app) {
+module.exports = function (app, jwtCheck) {
 
 //const keys = require('./keys/emailKeys.js');
 const mailgun = require('mailgun-js');
@@ -13,7 +13,7 @@ var juice = require('juice');
 var Bookings = require('./models/newbooking.js')
     
 // Send a message to the specified email address 
-app.post('/confirm', function(req,res,next) {
+app.post('/confirm', jwtCheck, function(req,res,next) {
 
 var fonts = {
 	Roboto: {
@@ -100,7 +100,7 @@ var fonts = {
       // =====================================
     // CANCEL BOOKING ===============
     // =====================================
-     app.post('/cancelbooking', function (req, res) {
+     app.post('/cancelbooking', jwtCheck, function (req, res) {
 
         var fonts = {
             Roboto: {
