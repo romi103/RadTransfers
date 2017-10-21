@@ -21,6 +21,8 @@ const AUDIENCE = 'http://radstransfersapi.co.uk';
 var auth = new auth0.WebAuth({
   clientID: CLIENT_ID,
   domain: CLIENT_DOMAIN
+}, {
+  allowSignUp: false
 });
 
 

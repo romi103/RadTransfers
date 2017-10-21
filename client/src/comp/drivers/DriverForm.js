@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import { addBooking, getDrivers, hideDriverModal} from '../../store/action/action.js';
-import { connect } from 'react-redux';
-import { Modal, Button } from 'react-bootstrap';
-import fs from 'fs';
-import http from 'http';
+import { hideDriverModal} from '../../store/action/action.js';
+import { Button } from 'react-bootstrap';
 import {InputText} from '../layout/InputText.js';
 import {SelectInput} from '../layout/SelectInput.js';
 import {TextArea} from '../layout/TextArea.js';
