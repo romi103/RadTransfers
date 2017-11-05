@@ -1,5 +1,5 @@
-// //creates enviromental variables - looks for .env file in the root folder and set'em up so they can be accessed by process.env object
-// require('dotenv').config()
+//creates enviromental variables - looks for .env file in the root folder and set'em up so they can be accessed by process.env object
+require('dotenv').config();
 
 const express = require("express");
 const fs = require("fs");

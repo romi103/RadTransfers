@@ -110,7 +110,7 @@ module.exports = function (app, jwtCheck) {
        // =====================================
     // GETTING LIST OF BOOKINGS ===============
     // =====================================
-    app.get('/getbookings',jwtCheck, function (req, res) {
+    app.get('/getbookings', function (req, res) {
 
         var bookings = Bookings.find().exec(function (err, bookings) {
             // console.log(bookings)
