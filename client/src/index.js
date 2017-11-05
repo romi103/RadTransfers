@@ -31,19 +31,6 @@ import { store } from './store/configStore.js';
 
 
 import 'bootstrap/dist/css/bootstrap.css';
-//login user/checking if user logged in
-
-// import Auth from './auth/auth.js';
-
-// const auth = new Auth();
-// auth.handleAuthentication()
-
-// store.dispatch(actionsAuth.userLogin(auth))
-//getting booking
-// store.dispatch(actions.getInitialState());
-//getting drivers
-// store.dispatch(actions.fetchDrivers());
-
 
 store.subscribe(() => {
     console.log('New state', store.getState());
@@ -55,8 +42,8 @@ ReactDOM.render(
         <Router history={browserHistory}>
             <Route path="/" component={MainContainer}>
                 <Route path='drivers' component={Drivers} onEnter={requireAuth}/>
-                <Route path='vehicles' component={Vehicles} onEnter={requireAuth}/>
-                <Route path='complaints' component={Complaints} onEnter={requireAuth}/>
+                {/* <Route path='vehicles' component={Vehicles} onEnter={requireAuth}/>
+                <Route path='complaints' component={Complaints} onEnter={requireAuth}/> */}
                 <Route path='bookings' component={Bookings} onEnter={requireAuth}/>
                 <Route path='callback' component={Callback} />
                 <Route path='login' component={Login} />

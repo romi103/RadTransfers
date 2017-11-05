@@ -4,8 +4,7 @@ import { confirmBookingSave, cancelBookingSave, startEditDriver, removeDriverSav
 import $ from 'jquery';
 import { findDOMNode } from 'react-dom';
 import { Button, Modal, Grid, Col, Image, Row, DropdownButton, MenuItem, Glyphicon} from 'react-bootstrap';
-
-
+import './DriverRow.css';
 
 
 
@@ -67,17 +66,11 @@ export class DriversRow extends Component {
 
         return(
             <tr>            
-                <Modal show={this.state.modalOpen} bsSize="sm">
+                <Modal show={this.state.modalOpen} bsSize="lg" dialogClassName="modal-photo">
 
-                    <Grid>
-                        <Row>
-                            <Col xs={6} md={4}>
-                                <Image src={this.state.previewImg} rounded />
-                            </Col>
-                        </Row>
-                    </Grid>
+                        <Image src={this.state.previewImg} rounded responsive={true} />
                     {/*<img src={this.state.previewImg} />*/}
-                    <button onClick={this.close}>Close</button>
+                    <button className="btn btn-primary" onClick={this.close}>Ok</button>
                 </Modal>
                  <td>
                     <DropdownButton title="More" id="bg-vertical-dropdown-1">

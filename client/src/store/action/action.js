@@ -282,7 +282,7 @@ export const fetchDrivers = () => {
                 })
             .fail(() => {
             dispatch(loadingStop());
-            alert("An error occured. Please contact support");
+            //alert("An error occured. Please contact support");
         })
     }
 }

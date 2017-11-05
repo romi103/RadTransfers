@@ -3,13 +3,15 @@ import { Link, IndexLink } from 'react-router';
 import { Glyphicon} from 'react-bootstrap';
 import { login, logout, isLoggedIn } from '../auth/auth.js';
 
+import "./Navigation.css";
+
 var Navbar = (props) => {
 
     const wellStyles = {maxWidth: 400, margin: '0 auto 10px'};
 
     return (
         <div className="well">
-            <div className='horizontal-list'>
+            <div className="list">
 
                 <div>
                     <ul>
@@ -19,12 +21,12 @@ var Navbar = (props) => {
                         <li>
                             <Link to="/drivers" activeClassName='active' className='link'><Glyphicon glyph="user" /> Drivers</Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link to="/vehicles" activeClassName='active' className='link'><Glyphicon glyph="road" /> Vehicles</Link>
                         </li>
                         <li>
                             <Link to="/complaints" activeClassName='active' className='link'><Glyphicon glyph="exclamation-sign" /> Complaints</Link>
-                        </li>
+                        </li> */}
                         {
                             (isLoggedIn()) ? <li><button className="btn btn-danger log" onClick={() => logout()}>Log out </button></li> :  <li><button className="btn btn-info log" onClick={() => login()}>Log In</button></li>
                         }

@@ -4,6 +4,7 @@ import auth0 from 'auth0-js';
 const ID_TOKEN_KEY = 'id_token';
 
 const ACCESS_TOKEN_KEY = 'access_token';
+const CURRENT_PATH = 'current_path';
 
 // const CLIENT_ID = '{AUTH0_CLIENT_ID}';
 const CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID;
@@ -28,6 +29,8 @@ var auth = new auth0.WebAuth({
 
 
 export function login() {
+
+  setPathName();
   auth.authorize({
     responseType: 'token id_token',
     redirectUri: REDIRECT,
@@ -35,6 +38,20 @@ export function login() {
     scope: SCOPE
   });
 }
+
+function setPathName() {
+  let currentPath = window.location.pathname;
+  sessionStorage.setItem(CURRENT_PATH, currentPath);
+}
+
+export function removePathName() {
+  sessionStorage.clear();
+}
+
+export function getPathName() {
+  return sessionStorage.getItem(CURRENT_PATH);
+}
+
 
 export function logout() {
   clearIdToken();
@@ -44,7 +61,7 @@ export function logout() {
 
 export function requireAuth(nextState, replace) {
   if (!isLoggedIn()) {
-    replace({pathname: '/login'});
+    login();
   }
 }
 

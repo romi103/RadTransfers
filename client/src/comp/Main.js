@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Navigation from './Navigation.js';
 import './Main.css'
-import {Loader} from './layout/Loader.js';
+import Loader from './layout/Loader.js';
 // import Auth from '../auth/auth.js';
 
 
@@ -18,20 +18,10 @@ export default class Main extends Component {
         showLoader = () => {
             if (this.props.loadingStatus.loading) {
                 return (
-                    <div className="overlay">
-                        <div className="loader">
-                            <Loader/>
-                        </div>
-                    </div>
+                        <Loader/>
                 )
             }
         }
-
-        // componentWillMount() {
-        //     
-        //     auth.login();
-        //     auth.handleAuthentication();
-        // }
 
         render() {
 

@@ -1,0 +1,11 @@
+.modal-photo img {
+    padding: 15px;
+}
+
+.modal-photo {
+    text-align: right;
+}
+
+.modal-photo button {
+    margin: 10px;
+}

@@ -1,6 +1,8 @@
-import {Component} from 'react';
-import {setAccessToken, setIdToken} from '../auth/auth.js'
+import React, { Component } from 'react';
+import {setAccessToken, setIdToken, getPathName} from '../auth/auth.js'
+import Loader from './layout/Loader.js'
 
+//callback component that accepts autorization tokens
 class Callback extends Component {
     constructor() {
         super()
@@ -9,11 +11,14 @@ class Callback extends Component {
     componentDidMount() {
         setAccessToken();
         setIdToken();
-        window.location.href = '/'
+
+        window.location.href = getPathName();
     }
 
     render() {
-        return null;
+        return (
+                <Loader/>
+        );
     }
 }
 

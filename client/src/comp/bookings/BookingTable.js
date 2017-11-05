@@ -5,19 +5,13 @@ import { BookingRow }  from './BookingRow.js';
 import { NewBookingContainer} from './NewBookingContainer.js';
 import {CSVLink, CSVDownload} from 'react-csv';
 import moment from 'moment';
-//import Pagination from 'react-js-pagination/src/components/Pagination.js';
 import Pagination from "react-js-pagination";
-// import  { Search }  from 'Search';
 
-// import { , ButModalton, Table } from 'react-bootstrap';
 import { DropdownButton, MenuItem, Button, Glyphicon, Table, Modal} from 'react-bootstrap';
-
-
 import fs from 'fs';
-// const {dialog} = require('electron').remote;
-// import Button from 'react-bootstrap/lib/Button';
-// import pdfMake from 'pdfmake/build/pdfmake';
-// require('pdfmake/build/vfs_fonts.js');
+
+import "./BookingTable.css";
+
 
 const now = new Date();
 
@@ -190,7 +184,7 @@ export default class BookingTable extends Component {
                 <Button bsStyle="primary" bsSize="large" className="actionButton" onClick={this.showModal}>New Booking</Button>
                 <hr/>
                 
-                <input type="text" id='searchTable' disabled={this.state.advancedSearch} placeholder={this.state.advancedSearch ? "Search by date active" : "Search"} value={this.state.searchString} onChange={(e) => {this.setState({ searchString: e.target.value})}} />
+                <input type="text" className="form-control" id='searchTable' disabled={this.state.advancedSearch} placeholder={this.state.advancedSearch ? "Search by date active" : "Search"} value={this.state.searchString} onChange={(e) => {this.setState({ searchString: e.target.value})}} />
                 
                  <Table bordered condensed>
                     <thead>
