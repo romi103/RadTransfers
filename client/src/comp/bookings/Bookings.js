@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
 // import BookingTable from 'BookingTable';
 import { BookingTableContainer } from './BookingTableContainer.js';
+import {isLoggedIn,  login} from '../../auth/auth.js'
 
 export default class Bookings extends Component {
 
-    render() {
+    componentDidMount() {
+        if(!isLoggedIn()) {
+            login();
+        }
+    }
 
+
+    render() {
+    
     
         return (
             <div className="well">

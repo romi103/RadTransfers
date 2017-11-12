@@ -9,7 +9,6 @@ import ReactDOM from 'react-dom';
 import { Route, Router, IndexRoute, hashHistory, browserHistory } from 'react-router';
 import{Provider} from 'react-redux'; 
 import './index.css';
-import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 import  {MainContainer} from './comp/MainContainer.js';
@@ -36,6 +35,8 @@ store.subscribe(() => {
     console.log('New state', store.getState());
 })
 
+store.dispatch(actions.getInitialState());
+store.dispatch(actions.fetchDrivers());
  
 ReactDOM.render(
     <Provider store={store}>

@@ -70,7 +70,7 @@ module.exports = function (app, jwtCheck) {
                 email: req.body.email,
                 carRegNo: req.body.carRegNo,
                 notes: req.body.notes } }, (err, numUpdate) => {
-                    if (err) throw "An error occured."
+                    if (err) return next(err);
                     console.log("updated");
                     res.end();
         })
@@ -99,7 +99,7 @@ module.exports = function (app, jwtCheck) {
                 fairNumber:  req.body.fairNumber
             
             } }, (err, numUpdate) => {
-                    if (err) throw "An error occured."
+                    if (err) return next(err);
                     console.log("updated");
                     res.end();
         })
@@ -110,11 +110,11 @@ module.exports = function (app, jwtCheck) {
        // =====================================
     // GETTING LIST OF BOOKINGS ===============
     // =====================================
-    app.get('/getbookings', function (req, res) {
+    app.get('/getbookings', jwtCheck, function (req, res, next) {
 
         var bookings = Bookings.find().exec(function (err, bookings) {
             // console.log(bookings)
-             if (err) return handleError(err);
+             if (err) return next(err);
             res.send(bookings);
         });
     });
@@ -122,11 +122,11 @@ module.exports = function (app, jwtCheck) {
           // =====================================
     // GETTING LIST OF DRIVERS ===============
     // =====================================
-    app.get('/getdrivers', jwtCheck, function (req, res) {
+    app.get('/getdrivers', jwtCheck, function (req, res, next) {
 
         var drivers = Drivers.find().exec(function (err, drivers) {
             // console.log(drivers)
-             if (err) return handleError(err);
+             if (err) return next(err);
             res.send(drivers);
         });
     });
@@ -134,12 +134,12 @@ module.exports = function (app, jwtCheck) {
         // =====================================
     // REMOVING DRIVER ===============
     // =====================================
-     app.get('/removedriver/:driverId', jwtCheck,function (req, res) {
+     app.get('/removedriver/:driverId', jwtCheck,function (req, res, next) {
 
         Drivers.find({
             "_id": req.params.driverId
         }).remove().exec(function(err, drivers) {
-            if (err) return handleError(err);
+            if (err) return next(err);
             res.send(drivers)
         })
     });
@@ -147,12 +147,12 @@ module.exports = function (app, jwtCheck) {
      // =====================================
     // REMOVING BOOKING ===============
     // =====================================
-     app.get('/removebooking/:bookingId',jwtCheck, function (req, res) {
+     app.get('/removebooking/:bookingId',jwtCheck, function (req, res, next) {
 
         Bookings.find({
             "_id": req.params.bookingId
         }).remove().exec(function(err, bookings) {
-            if (err) return handleError(err);
+            if (err) return next(err);
             res.send(bookings)
         })
     });

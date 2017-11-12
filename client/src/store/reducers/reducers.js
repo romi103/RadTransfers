@@ -28,6 +28,26 @@ const bookingsDeafult = [{
     cancelled: false
 }]
 
+export const errorStatusReducer = (state = {
+    status: null,
+    statusText: null,
+    show: false 
+}, action) => {
+    switch (action.type) {
+        case 'ERROR_SHOW':
+            return Object.assign({}, state, {
+                status: action.status,
+                statusText: action.statusText,
+                show: action.show });
+        case 'ERROR_HIDE':
+            return Object.assign({}, state, {
+                status: action.status,
+                statusText: action.statusText,
+                show: action.show });
+        default: 
+            return state
+    }
+}
 
 export const bookingsReducer = (state = [], action) => {
     switch (action.type) {

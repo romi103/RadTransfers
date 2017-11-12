@@ -58,7 +58,7 @@ var fonts = {
     const mailgunConfig = mailgun({apiKey: process.env.EMAIL_KEY, domain: process.env.EMAIL_DOMAIN});
 
      const mail = mailcomposer({
-                from: 'you@samples.mailgun.org',
+                from: 'radstransfers@info.co.uk',
                 to: bookingObj.email,
                 subject: 'Booking conforamtion. Reference No. ',
                 text:  'Rad\'sTansfers',
@@ -79,7 +79,7 @@ var fonts = {
 
                 mailgunConfig.messages().sendMime(dataToSend, function (sendError, body) {
                     if (sendError) {
-                        alert('An error occured', sendError)
+                        next(sendError)
                         console.log(sendError);
                         return;
                     } else {
@@ -88,7 +88,7 @@ var fonts = {
                          Bookings.findByIdAndUpdate({
                             "_id": bookingObj._id
                             }, { $set: {confirmed: true, cancelled: false}}, { new: true }, function (err, booking) {
-                                if (err) return handleError(err);
+                                if (err) return next(err);
                                 res.send(booking);
                          });
                         console.log("The email has been sent!");
@@ -100,7 +100,7 @@ var fonts = {
       // =====================================
     // CANCEL BOOKING ===============
     // =====================================
-     app.post('/cancelbooking', jwtCheck, function (req, res) {
+     app.post('/cancelbooking', jwtCheck, function (req, res, next) {
 
         var fonts = {
             Roboto: {
@@ -111,6 +111,9 @@ var fonts = {
 
     var bookingObj = req.body.booking;
     var driverObj = req.body.driver;
+
+    console.log("bookingObj",bookingObj)
+    console.log("driverObj",driverObj)
 
     var booking = {
             bookingOrederNo: bookingObj.bookingOrederNo,
@@ -137,10 +140,10 @@ var fonts = {
     
     
     //We pass the api_key and domain to the wrapper, or it won't be able to identify + send emails
-    const mailgunConfig = mailgun({apiKey: keys.apiKey, domain: keys.domain});
+    const mailgunConfig = mailgun({apiKey: process.env.EMAIL_KEY, domain: process.env.EMAIL_DOMAIN});
 
      const mail = mailcomposer({
-                from: 'you@samples.mailgun.org',
+                from: 'radstransfers@info.co.uk',
                 to: bookingObj.email,
                 subject: 'Booking cancelation',
                 text:  'Rad\'sTansfers',
@@ -156,7 +159,7 @@ var fonts = {
 
                 mailgunConfig.messages().sendMime(dataToSend, function (sendError, body) {
                     if (sendError) {
-                        alert('An error occured', sendError)
+                        next(sendError);
                         console.log(sendError);
                         return;
                     } else {
@@ -164,7 +167,7 @@ var fonts = {
                          Bookings.findByIdAndUpdate({
                             "_id": bookingObj._id
                          }, { $set: {confirmed: false, cancelled: true}}, { new: true }, function (err, booking) {
-                            if (err) return handleError(err);
+                            if (err) return next(err);
                                  res.send(booking);
                             });
                         console.log("Cancel email has been sent!");

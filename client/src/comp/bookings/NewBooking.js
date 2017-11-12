@@ -27,7 +27,7 @@ export class NewBooking extends Component {
                 remarks: `Flight No:\nNumber of Passangers:\n`,
                 confirmed: '',
                 cancelled: '',
-                email: '',
+                email: 'romanlorent@gmail.com',
                 assignedDriver: '',
                 fairNumber: '',
         }

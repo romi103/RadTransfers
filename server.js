@@ -79,6 +79,10 @@ if (process.env.NODE_ENV === "production") {
 }
 
 
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500).end();
+});
+
 app.listen(app.get("port"), () => {
   console.log(`Find the server at: http://localhost:${app.get("port")}/`); // eslint-disable-line no-console
 });

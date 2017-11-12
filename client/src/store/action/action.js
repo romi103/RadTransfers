@@ -25,14 +25,20 @@ export const saveBooking = (booking) => {
             bookingOrederNo: bookingOrederNo
         }
         dispatch(loadingStart());
-       $.post('/newbooking', bookingMod)
+       $.post(
+        {
+            url: '/newbooking',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', `Bearer ${getAccessToken()}`);
+            }
+        }, bookingMod)
        .done(() =>{
            dispatch(addBooking(bookingMod))
            dispatch(loadingStop());
             })
-        .fail(() => {
+        .fail((err) => {
                 dispatch(loadingStop());
-                alert("An error occured. Please contact support")
+                dispatch(errorShow(err.status, err.statusText));
             })
     
     }
@@ -55,7 +61,12 @@ export const confirmBookingSave = (booking) => {
                 return driver._id == assignedDriverId
             })
             dispatch(loadingStart());
-           $.post('/confirm/', { booking: booking, driver: driverData })
+           $.post({
+            url: '/confirm/',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', `Bearer ${getAccessToken()}`);
+            }
+        }, { booking: booking, driver: driverData })
                 .done(() =>{
                     dispatch(confirmBooking(booking._id));
                     dispatch(driverConfirmedEmailReset());
@@ -65,7 +76,7 @@ export const confirmBookingSave = (booking) => {
             })
                 .fail((err) => {
                     dispatch(loadingStop());
-                    alert("An error occured. Please contact support", err);
+                    dispatch(errorShow(err.status, err.statusText));
             })           
             }
     
@@ -83,14 +94,19 @@ export const saveEditBooking = (booking) => {
 
     return (dispatch, getState) => {
         dispatch(loadingStart());
-         $.post('/saveeditbooking', booking)
+         $.post({
+            url: '/saveeditbooking',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', `Bearer ${getAccessToken()}`);
+            }
+        }, booking)
             .done(() =>{
                 dispatch(editBooking(booking));
                 dispatch(loadingStop());
             })
-            .fail(() => {
+            .fail((err) => {
                 dispatch(loadingStop());
-                alert("An error occured. Please contact support")
+                dispatch(errorShow(err.status, err.statusText));
             })
     }
 
@@ -153,17 +169,24 @@ export const cancelBookingSave = (booking) => {
             let driverData = driversState.filter((driver) => {
                 return driver._id == assignedDriverId
             })
+            
+
 
             dispatch(loadingStart());
-         $.post('/cancelbooking', { booking: booking, driver: driverData  })
+         $.post({
+            url: '/cancelbooking/',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', `Bearer ${getAccessToken()}`);
+            }
+        }, { booking: booking, driver: driverData  })
             .done(() =>{
-           dispatch(cancelBooking(booking._id));
-           dispatch(loadingStop());
-           alert("Cancelation email sent.");
+                dispatch(cancelBooking(booking._id));
+                dispatch(loadingStop());
+                alert("Cancelation email sent.");
         })
-        .fail(() => {
+        .fail((err) => {
             dispatch(loadingStop());
-            alert("An error occured. Please contact support");
+            dispatch(errorShow(err.status, err.statusText));
         })
     }
 }
@@ -179,14 +202,19 @@ export const cancelBooking = (id) => {
 export const removeBookingSave = (booking) => {
     return (dispatch, getState) => {
         dispatch(loadingStart());
-        $.get('/removebooking/' + booking._id)
+        $.get({
+            url: '/removebooking/' + booking._id,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', `Bearer ${getAccessToken()}`);
+            }
+        })
        .done(() =>{
            dispatch(removeBooking(booking._id));
            dispatch(loadingStop());
        })
-        .fail(() => {
+        .fail((err) => {
             dispatch(loadingStop());
-            alert("An error occured. Please contact support");
+            dispatch(errorShow(err.status, err.statusText));
         })
         
     }
@@ -204,21 +232,21 @@ export const removeBooking = (id) => {
 export const getInitialState = () => {
     return (dispatch, getState) => {
 
-        let fetchData = new Promise((resolve, reject) => {
-            dispatch(loadingStart());
+        dispatch(loadingStart());
         $.get({
-            url: "/getbookings",
+            url: '/getbookings',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader('Authorization', `Bearer ${getAccessToken()}`);
             }
-        }, (bookings) =>{
-            console.log(bookings);
-            dispatch(loadingStop());
-            resolve(bookings);
         })
-        }).then((bookings) => {
+        .done((bookings) => {
             dispatch(loadingStop());
             dispatch(setInitialState(bookings));
+            
+        })
+        .fail((err) => {
+            dispatch(loadingStop());
+            dispatch(errorShow(err.status, err.statusText));
         })
     }
 }
@@ -280,9 +308,9 @@ export const fetchDrivers = () => {
                     dispatch(loadingStop());
                     
                 })
-            .fail(() => {
+            .fail((err) => {
             dispatch(loadingStop());
-            //alert("An error occured. Please contact support");
+            dispatch(errorShow(err.status, err.statusText));
         })
     }
 }
@@ -304,14 +332,19 @@ export const saveDriver = (driver) => {
             _id: uuidV1()
         }
         dispatch(loadingStart());
-        $.post('/savedriver', driverMod)
+        $.post({
+            url: '/savedriver',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', `Bearer ${getAccessToken()}`);
+            }
+        }, driverMod)
             .done(() =>{
                 dispatch(addDriver(driverMod))
                 dispatch(loadingStop());
             })
-            .fail(() => {
+            .fail((err) => {
                 dispatch(loadingStop());
-                alert("An error occured. Please contact support")
+                dispatch(errorShow(err.status, err.statusText));
             })
     }
 
@@ -321,18 +354,42 @@ export const saveEditDriver = (driver) => {
 
     return (dispatch, getState) => {
         dispatch(loadingStart());
-         $.post('/saveeditdriver', driver)
+         $.post({
+            url: '/saveeditdriver',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', `Bearer ${getAccessToken()}`);
+            }
+        }, driver)
             .done(() =>{
                 dispatch(editDriver(driver));
                 dispatch(loadingStop());
             })
-            .fail(() => {
+            .fail((err) => {
                 dispatch(loadingStop());
-                alert("An error occured. Please contact support")
+                dispatch(errorShow(err.status, err.statusText));
             })
     }
 
 }
+
+export const errorShow = (status, statusText) => {
+    return {
+        type: 'ERROR_SHOW',
+        status,
+        statusText,
+        show: true
+    }
+}
+
+export const errorHide = () => {
+    return {
+        type: 'ERROR_HIDE',
+        status: null,
+        statusText: null,
+        show: false 
+    }
+}
+
 
 export const editDriver = (driver) => {
     return {
@@ -365,9 +422,9 @@ export const removeDriverSave = (driver) => {
                 dispatch(removeDriver(driver._id));
                 dispatch(loadingStop());
             })
-                .fail(() => {
+                .fail((err) => {
                 dispatch(loadingStop());
-                alert("An error occured. Please contact support");
+                dispatch(errorShow(err.status, err.statusText));
             })
        
     }
