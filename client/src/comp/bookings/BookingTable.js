@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getInitialState, showNewBookingModal} from '../../store/action/action.js';
+import { getInitialState, showNewBookingModal, fetchDrivers} from '../../store/action/action.js';
 import { connect } from 'react-redux';
 import { BookingRow }  from './BookingRow.js';
 import { NewBookingContainer} from './NewBookingContainer.js';
@@ -49,6 +49,7 @@ export default class BookingTable extends Component {
 
     componentDidMount() {
         this.props.dispatch(getInitialState());
+        this.props.dispatch(fetchDrivers());
     }
 
 

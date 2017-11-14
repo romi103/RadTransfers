@@ -35,8 +35,7 @@ store.subscribe(() => {
     console.log('New state', store.getState());
 })
 
-store.dispatch(actions.getInitialState());
-store.dispatch(actions.fetchDrivers());
+
  
 ReactDOM.render(
     <Provider store={store}>

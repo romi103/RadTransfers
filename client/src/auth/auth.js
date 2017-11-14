@@ -23,7 +23,11 @@ var auth = new auth0.WebAuth({
   clientID: CLIENT_ID,
   domain: CLIENT_DOMAIN
 }, {
-  allowSignUp: false
+  allowSignUp: false,
+  languageDictionary: {
+    emailInputPlaceholder: "something@youremail.com",
+    title: "Log me in"
+  },
 });
 
 

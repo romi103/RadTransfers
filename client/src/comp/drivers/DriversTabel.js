@@ -19,6 +19,7 @@ export class DriversTabel extends Component {
 
     componentDidMount() {
         this.props.dispatch(fetchDrivers())
+        this.props.dispatch(getInitialState());
     }
 
     showModal() {
